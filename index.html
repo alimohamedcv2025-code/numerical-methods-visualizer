@@ -9,7 +9,6 @@
 <body>
   <div class="container">
     <h1 class="title">Numerical Methods Visualizer</h1>
-
     <!-- Method Selection -->
     <div class="card">
       <h2 class="card-title">Select Method</h2>
@@ -20,31 +19,30 @@
           <option value="falseposition">False Position Method</option>
           <option value="fixedpoint">Simple Fixed Point</option>
           <option value="newton">Newton-Raphson</option>
+          <option value="secant">Secant Method</option>
         </select>
         <span id="methodBadge" class="badge hidden"></span>
       </div>
     </div>
-
     <!-- Input Form -->
     <div id="inputSection" class="card hidden">
       <h2 class="card-title">Input Parameters</h2>
       <div class="form-grid">
-        <!-- f(x) -->
         <div class="full-width" id="funcRow">
           <label>Function f(x)</label>
           <input type="text" id="funcExpr" placeholder="x^3 - 4*x - 9" />
         </div>
-        <!-- g(x) optional for Fixed Point -->
         <div class="full-width hidden" id="gRow">
-          <label>g(x) — optional, e.g. (4*x+9)^(1/3)</label>
-          <input type="text" id="gExpr" placeholder="leave empty for auto" />
+          <div class="convert-row">
+            <label>g(x) — from f(x)=0 → x=g(x)</label>
+            <button type="button" id="convertToGxBtn" class="convert-btn">Convert F(x) → g(x)</button>
+          </div>
+          <input type="text" id="gExpr" placeholder="(x^3 - 9) / 4 or use Convert" />
         </div>
-        <!-- f'(x) for newton -->
         <div class="full-width hidden" id="dfRow">
           <label>f'(x) — derivative</label>
           <input type="text" id="dfExpr" placeholder="3*x^2 - 4" />
         </div>
-        <!-- xl, xu for bracket -->
         <div id="xlRow">
           <label>xl (lower bound)</label>
           <input type="number" id="xlInput" />
@@ -53,34 +51,47 @@
           <label>xu (upper bound)</label>
           <input type="number" id="xuInput" />
         </div>
-        <!-- x0 for fixed point & newton -->
         <div class="hidden" id="x0Row">
           <label>x₀ (initial guess)</label>
           <input type="number" id="x0Input" />
         </div>
+        <div class="hidden" id="x1Row">
+          <label>x₁ (second guess)</label>
+          <input type="number" id="x1Input" />
+        </div>
+        <!-- Stopping Criterion Select -->
         <div>
+          <label>Stopping Criterion</label>
+          <select id="stopSelect" class="stop-select">
+            <option value="epsilon">Epsilon (tolerance %)</option>
+            <option value="maxiter">Max Iterations</option>
+          </select>
+        </div>
+        <!-- Epsilon (shown by default) -->
+        <div id="epsilonRow">
           <label>Epsilon (tolerance)</label>
           <div class="input-with-suffix">
             <input type="number" id="epsilonInput" step="any" />
             <span class="suffix">%</span>
           </div>
         </div>
+        <!-- Max Iterations (hidden by default) -->
+        <div id="maxIterRow" class="hidden">
+          <label>Max Iterations</label>
+          <input type="number" id="maxIterInput" min="1" placeholder="e.g. 50" />
+        </div>
         <div>
           <label>Decimal Digits</label>
-          <input type="number" id="digitsInput" min="1" max="15"  placeholder="0" />
+          <input type="number" id="digitsInput" min="1" max="15" placeholder="0" />
         </div>
         <div class="full-width button-row">
           <button id="solveBtn" class="solve-btn">Solve</button>
         </div>
       </div>
     </div>
-
-    <!-- Error -->
     <div id="errorBox" class="error-box hidden"></div>
   </div>
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.2/math.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
