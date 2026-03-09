@@ -8,21 +8,63 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="title">Numerical Methods Visualizer</h1>
-    <!-- Method Selection -->
-    <div class="card">
-      <h2 class="card-title">Select Method</h2>
-      <div class="method-row">
-        <select id="methodSelect">
-          <option value="">Choose a method…</option>
-          <option value="bisection">Bisection Method</option>
-          <option value="falseposition">False Position Method</option>
-          <option value="fixedpoint">Simple Fixed Point</option>
-          <option value="newton">Newton-Raphson</option>
-          <option value="secant">Secant Method</option>
-        </select>
-        <span id="methodBadge" class="badge hidden"></span>
-      </div>
+<h1 class="title">Numerical Methods Visualizer</h1>
+
+<!-- Section Selection -->
+<div class="card">
+  <h2 class="card-title">Select Section</h2>
+
+  <div class="method-row">
+    <button class="section-btn" data-section="polySection">
+      Polynomial Functions
+    </button>
+
+    <button class="section-btn" data-section="linearSection">
+      Linear Algebraic Equation
+    </button>
+
+    <button class="section-btn" data-section="chapter3Section">
+      Chapter 3
+    </button>
+  </div>
+</div>
+<!-- Polynomial Section -->
+<div id="polySection" class="section hidden">
+
+  <div class="card">
+    <h2 class="card-title">Select Method</h2>
+
+    <div class="method-row">
+      <select id="methodSelect">
+        <option value="">Choose a method…</option>
+        <option value="bisection">Bisection Method</option>
+        <option value="falseposition">False Position Method</option>
+        <option value="fixedpoint">Simple Fixed Point</option>
+        <option value="newton">Newton-Raphson</option>
+        <option value="secant">Secant Method</option>
+      </select>
+
+      <span id="methodBadge" class="badge hidden"></span>
+    </div>
+
+  </div>
+
+</div>
+<!-- Linear Algebra Section -->
+<div id="linearSection" class="section hidden">
+  <div class="card">
+    <h2 class="card-title">Linear Algebraic Equation</h2>
+    <p>Methods will be added soon.</p>
+  </div>
+</div>
+
+<!-- Chapter 3 Section -->
+<div id="chapter3Section" class="section hidden">
+  <div class="card">
+    <h2 class="card-title">Chapter 3</h2>
+    <p>Content will be added later.</p>
+  </div>
+</div>
     </div>
     <!-- Input Form -->
     <div id="inputSection" class="card hidden">
