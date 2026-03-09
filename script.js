@@ -458,3 +458,29 @@ if (isOutputPage) {
     }
   });
 }
+// Section switching
+const sectionButtons = document.querySelectorAll(".section-btn");
+const sections = document.querySelectorAll(".section");
+
+sectionButtons.forEach(button => {
+  button.addEventListener("click", () => {
+
+    const targetSection = button.dataset.section;
+
+    // hide all sections
+    sections.forEach(sec => sec.classList.add("hidden"));
+
+    // show selected section
+    document.getElementById(targetSection).classList.remove("hidden");
+
+    // reset method selection
+    const methodSelect = document.getElementById("methodSelect");
+    const inputSection = document.getElementById("inputSection");
+    const methodBadge = document.getElementById("methodBadge");
+
+    if (methodSelect) methodSelect.value = "";
+    if (inputSection) inputSection.classList.add("hidden");
+    if (methodBadge) methodBadge.classList.add("hidden");
+
+  });
+});
