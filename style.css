@@ -457,3 +457,32 @@ input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px hsl(220, 24%, 20%) inset !important;
   -webkit-text-fill-color: hsl(var(--text)) !important;
 }
+.section-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid hsl(217, 33%, 25%); 
+  background-color: hsl(217, 33%, 17%); 
+  color: hsl(215, 20%, 65%);
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 8px;
+  transition: 0.3s;
+}
+
+.section-btn.active {
+  background-color: hsl(230, 100%, 65%); 
+  color: white;
+}
+
+.section {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid hsl(217, 33%, 25%);
+  background-color: hsl(217, 33%, 20%);
+  margin-top: 12px;
+}
+
+.section-btn:hover {
+  background-color: hsl(217, 33%, 25%);
+  color: hsl(230, 100%, 65%);
+}
