@@ -1,101 +1,160 @@
 # Numerical Methods Visualizer
 
-An interactive web-based tool for solving and visualizing numerical root-finding methods and systems of linear algebraic equations.
+An interactive web-based tool for solving and visualizing **Numerical Methods**, including **root-finding algorithms** and **systems of linear algebraic equations**.
 
-## Features
+---
 
-### 1. Polynomial Functions (Root-Finding)
+# Features
+
+## 1️⃣ Root-Finding Methods
 - Bisection Method
 - False Position (Regula Falsi)
 - Simple Fixed Point Iteration
 - Newton-Raphson Method
 - Secant Method
 
-### 2. Linear Algebraic Equations
-- **Gaussian Elimination**:
-  - Interactive Step-by-step solver (Press <kbd>Enter</kbd> to reveal the next step).
-  - Shows row operations with exact fractional multipliers.
-  - Generates the Upper Triangular Matrix automatically.
-  - Performs Back Substitution step-by-step to reach the final solution variables.
-- *(Upcoming Methods)*:
-  - LU Factorization
-  - PA = LU Factorization
-  - Gauss-Jordan
-  - Cramer's Rule
+### Visualization
+- Function graph **f(x)**
+- Convergence chart
+- Error percentage chart
 
-## Visualization & UI
-- **Dynamic Workspaces**: Seamless switching between Polynomial and Linear Equation sections.
-- **Function graphs f(x)** (Polynomials).
-- **Convergence & Error Charts** (Polynomials).
-- **Matrix Grid Input**: Easy-to-use grid for writing the augmented matrix `[A | b]`.
-
-## Stopping Criteria (Polynomials)
+### Stopping Criteria
 - Epsilon (tolerance %)
 - Maximum iterations
 
-## Other Features
-- Modern Dark Mode aesthetic with glowing highlights.
-- Clear Active Method Badges.
-- Automatic conversion from f(x) to g(x) for Fixed Point iteration.
-- Configurable decimal precision and Matrix dimensions up to 6x6.
-- Responsive design.
+---
 
-## Project Structure
+## 2️⃣ Linear Algebraic Equations
+
+### Gaussian Elimination
+- Interactive **Step-by-step solver**
+- Press **Enter** to reveal each elimination step
+- Shows **row operations** with exact multipliers
+- Automatically generates **Upper Triangular Matrix**
+- Performs **Back Substitution** to obtain the final solution
+
+### Upcoming Methods
+- LU Factorization
+- PA = LU Factorization
+- Gauss-Jordan
+- Cramer's Rule
+
+---
+
+# Other Features
+
+- Automatic conversion from **f(x) → g(x)** for Fixed Point
+- Configurable **decimal precision**
+- Matrix dimensions up to **6×6**
+- Modern **Dark UI Design**
+- Responsive interface
+- Active method indicators
+
+---
+
+# Project Structure
 
 ```
 project
 │
-├── index.html        (Main UI with separate sections)
-├── style.css         (Fully responsive dark theme)
-├── script.js         (Core computation and DOM logic)
+├── index.html
+├── output.html
+├── style.css
+├── script.js
 ├── README.md
 │
-├── (Images from UI):
-│   ├── input-page.png (Old Root-Finding)
-│   ├── iterations.png
-│   ├── graph.png
-│   ├── convergence.png
-│   ├── linear-methods-selection.png (New Section Selection UI)
-│   ├── gaussian-elimination-matrix.png (New Augment Matrix Grid)
-│   └── gaussian-elimination-steps.png (New Step-by-Step Visualization)
+├── input-page.png.png
+├── iterations.png.png
+├── graph.png.png
+├── convergence.png.png
+│
+├── linear-methods-selection.png.png
+├── gaussian-elimination-matrix.png.png
+└── gaussian-elimination-steps.png.png
 ```
 
-## Preview Images
+---
 
-*Place your screenshots in the same directory using the filenames below to preview them correctly.*
+# Application Screenshots
 
-### Section Selection & Matrix Input (Gaussian Elimination)
-![Select Section & Matrix Input](linear-methods-selection.png)
+## Root-Finding Input Page
+![Input Page](input-page.png.png)
 
-### Step-by-Step Elimination (Forward Elimination)
-![Gaussian Elimination Steps](gaussian-elimination-steps.png)
+## Iteration Results
+![Iterations Table](iterations.png.png)
 
-### Back Substitution & Final Solution
-![Final Solution Extraction](gaussian-elimination-matrix.png)
+## Function Graph
+![Function Graph](graph.png.png)
 
-*(You can replace these image links with the actual names of the pictures you sent inside your project directory!)*
+## Convergence Chart
+![Convergence Chart](convergence.png.png)
 
-## Technologies Used
+---
+
+# Gaussian Elimination Section
+
+## Section Selection & Matrix Input
+![Matrix Input](linear-methods-selection.png.png)
+
+## Step-by-Step Elimination
+![Gaussian Elimination Steps](gaussian-elimination-steps.png.png)
+
+## Final Matrix & Solution
+![Final Solution](gaussian-elimination-matrix.png.png)
+
+---
+
+# Technologies Used
 
 - HTML5
-- CSS3 (Vanilla)
-- JavaScript (Vanilla)
-- `math.js` (For exact mathematical parsing and matrix operations)
-- `Chart.js` (For root-finding graphs)
+- CSS3
+- JavaScript
+- math.js
+- Chart.js
 
-## How to Run
+---
 
-1. Clone or download the project.
-2. Open `index.html` in your browser.
-3. Select your desired problem domain (e.g., **Linear Algebraic Equation**).
-4. Choose the specific algorithm (e.g., **Gaussian Elimination**).
-5. Enter your function constraints or fill the Augmented Matrix `[A | b]`.
-6. Click **Solve**!
-7. **For Gaussian Elimination**: Press the `Enter` key on your keyboard to advance through the actual calculation steps (Forward Elimination $\rightarrow$ Back Substitution $\rightarrow$ Solution) smoothly.
+# How to Run
 
-## Example
-### Root-Finding:
-Using Bisection Method for `4*x^3 - 6*x^2 + 7*x - 2.3` between `xl = 0` and `xu = 1`.
+1. Download or clone the project
+2. Open `index.html` in your browser
+3. Choose the type of problem:
+   - Root-Finding
+   - Linear Algebra
+4. Select the method
+5. Enter the required parameters
+6. Click **Solve**
 
-### Linear Algebra:
-Solving a $3 \times 3$ system of equations using Gaussian Elimination. Load the built-in example matrix to see how multipliers and row replacements operate until reaching the $x_1, x_2, x_3$ solution vector.
+For **Gaussian Elimination**, press **Enter** to reveal the next step.
+
+---
+
+# Example
+
+## Root Finding Example
+
+Function:
+
+```
+4x^3 - 6x^2 + 7x - 2.3
+```
+
+Using **Bisection Method**
+
+```
+xl = 0
+xu = 1
+epsilon = 0.7%
+```
+
+---
+
+## Linear Algebra Example
+
+Solve the following **3×3 system** using **Gaussian Elimination**:
+
+```
+2x + y - z = 8
+-3x - y + 2z = -11
+-2x + y + 2z = -3
+```
