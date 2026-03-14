@@ -1,139 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Numerical Methods Visualizer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="container">
-<h1 class="title">Numerical Methods Visualizer</h1>
+    <h1 class="title">Numerical Methods Visualizer</h1>
 
-<!-- Section Selection -->
-<div class="card">
-  <h2 class="card-title">Select Section</h2>
+    <!-- Section Selection -->
+    <div class="card">
+      <h2 class="card-title">Select Section</h2>
 
-  <div class="method-row">
-    <button class="section-btn" data-section="polySection">
-      Polynomial Functions
-    </button>
+      <div class="method-row">
+        <button class="section-btn" data-section="polySection">
+          Polynomial Functions
+        </button>
 
-    <button class="section-btn" data-section="linearSection">
-      Linear Algebraic Equation
-    </button>
+        <button class="section-btn" data-section="linearSection">
+          Linear Algebraic Equation
+        </button>
 
-    <button class="section-btn" data-section="chapter3Section">
-      Chapter 3
-    </button>
-  </div>
-</div>
-<!-- Polynomial Section -->
-<div id="polySection" class="section hidden">
-
-  <div class="card">
-    <h2 class="card-title">Select Method</h2>
-
-    <div class="method-row">
-      <select id="methodSelect">
-        <option value="">Choose a method…</option>
-        <option value="bisection">Bisection Method</option>
-        <option value="falseposition">False Position Method</option>
-        <option value="fixedpoint">Simple Fixed Point</option>
-        <option value="newton">Newton-Raphson</option>
-        <option value="secant">Secant Method</option>
-      </select>
-
-      <span id="methodBadge" class="badge hidden"></span>
-    </div>
-
-  </div>
-
-</div>
-<!-- Linear Algebra Section -->
-<div id="linearSection" class="section hidden">
-  <div class="card">
-    <h2 class="card-title">Linear Algebraic Equation</h2>
-    <p>Methods will be added soon.</p>
-  </div>
-</div>
-
-<!-- Chapter 3 Section -->
-<div id="chapter3Section" class="section hidden">
-  <div class="card">
-    <h2 class="card-title">Chapter 3</h2>
-    <p>Content will be added later.</p>
-  </div>
-</div>
-    </div>
-    <!-- Input Form -->
-    <div id="inputSection" class="card hidden">
-      <h2 class="card-title">Input Parameters</h2>
-      <div class="form-grid">
-        <div class="full-width" id="funcRow">
-          <label>Function f(x)</label>
-          <input type="text" id="funcExpr" placeholder="x^3 - 4*x - 9" />
-        </div>
-        <div class="full-width hidden" id="gRow">
-          <div class="convert-row">
-            <label>g(x) — from f(x)=0 → x=g(x)</label>
-            <button type="button" id="convertToGxBtn" class="convert-btn">Convert F(x) → g(x)</button>
-          </div>
-          <input type="text" id="gExpr" placeholder="(x^3 - 9) / 4 or use Convert" />
-        </div>
-        <div class="full-width hidden" id="dfRow">
-          <label>f'(x) — derivative</label>
-          <input type="text" id="dfExpr" placeholder="3*x^2 - 4" />
-        </div>
-        <div id="xlRow">
-          <label>xl (lower bound)</label>
-          <input type="number" id="xlInput" />
-        </div>
-        <div id="xuRow">
-          <label>xu (upper bound)</label>
-          <input type="number" id="xuInput" />
-        </div>
-        <div class="hidden" id="x0Row">
-          <label>x₀ (initial guess)</label>
-          <input type="number" id="x0Input" />
-        </div>
-        <div class="hidden" id="x1Row">
-          <label>x₁ (second guess)</label>
-          <input type="number" id="x1Input" />
-        </div>
-        <!-- Stopping Criterion Select -->
-        <div>
-          <label>Stopping Criterion</label>
-          <select id="stopSelect" class="stop-select">
-            <option value="epsilon">Epsilon (tolerance %)</option>
-            <option value="maxiter">Max Iterations</option>
-          </select>
-        </div>
-        <!-- Epsilon (shown by default) -->
-        <div id="epsilonRow">
-          <label>Epsilon (tolerance)</label>
-          <div class="input-with-suffix">
-            <input type="number" id="epsilonInput" step="any" />
-            <span class="suffix">%</span>
-          </div>
-        </div>
-        <!-- Max Iterations (hidden by default) -->
-        <div id="maxIterRow" class="hidden">
-          <label>Max Iterations</label>
-          <input type="number" id="maxIterInput" min="1" placeholder="e.g. 50" />
-        </div>
-        <div>
-          <label>Decimal Digits</label>
-          <input type="number" id="digitsInput" min="1" max="15" placeholder="0" />
-        </div>
-        <div class="full-width button-row">
-          <button id="solveBtn" class="solve-btn">Solve</button>
-        </div>
+        <button class="section-btn" data-section="chapter3Section">
+          Chapter 3
+        </button>
       </div>
     </div>
-    <div id="errorBox" class="error-box hidden"></div>
+    <!-- Polynomial Section -->
+    <div id="polySection" class="section hidden">
+
+      <div class="card">
+        <h2 class="card-title">Select Method</h2>
+
+        <div class="method-row">
+          <select id="methodSelect">
+            <option value="">Choose a method…</option>
+            <option value="bisection">Bisection Method</option>
+            <option value="falseposition">False Position Method</option>
+            <option value="fixedpoint">Simple Fixed Point</option>
+            <option value="newton">Newton-Raphson</option>
+            <option value="secant">Secant Method</option>
+          </select>
+
+          <span id="methodBadge" class="badge hidden"></span>
+        </div>
+
+      </div>
+
+      <!-- Input Form -->
+      <div id="inputSection" class="card hidden" style="margin-top: 1.5rem;">
+        <div class="method-row" style="margin-bottom: 1.5rem;">
+          <span class="badge" id="polyActiveMethodBadge" style="font-size: 1rem; padding: 0.5rem 1rem;"></span>
+        </div>
+        
+        <h2 class="card-title">Input Parameters</h2>
+        <div class="form-grid">
+          <div class="full-width" id="funcRow">
+            <label>Function f(x)</label>
+            <input type="text" id="funcExpr" placeholder="x^3 - 4*x - 9" />
+          </div>
+          <div class="full-width hidden" id="gRow">
+            <div class="convert-row">
+              <label>g(x) — from f(x)=0 → x=g(x)</label>
+              <button type="button" id="convertToGxBtn" class="convert-btn">Convert F(x) → g(x)</button>
+            </div>
+            <input type="text" id="gExpr" placeholder="(x^3 - 9) / 4 or use Convert" />
+          </div>
+          <div class="full-width hidden" id="dfRow">
+            <label>f'(x) — derivative</label>
+            <input type="text" id="dfExpr" placeholder="3*x^2 - 4" />
+          </div>
+          <div id="xlRow">
+            <label>xl (lower bound)</label>
+            <input type="number" id="xlInput" />
+          </div>
+          <div id="xuRow">
+            <label>xu (upper bound)</label>
+            <input type="number" id="xuInput" />
+          </div>
+          <div class="hidden" id="x0Row">
+            <label>x₀ (initial guess)</label>
+            <input type="number" id="x0Input" />
+          </div>
+          <div class="hidden" id="x1Row">
+            <label>x₁ (second guess)</label>
+            <input type="number" id="x1Input" />
+          </div>
+          <!-- Stopping Criterion Select -->
+          <div>
+            <label>Stopping Criterion</label>
+            <select id="stopSelect" class="stop-select">
+              <option value="epsilon">Epsilon (tolerance %)</option>
+              <option value="maxiter">Max Iterations</option>
+            </select>
+          </div>
+          <!-- Epsilon (shown by default) -->
+          <div id="epsilonRow">
+            <label>Epsilon (tolerance)</label>
+            <div class="input-with-suffix">
+              <input type="number" id="epsilonInput" step="any" />
+              <span class="suffix">%</span>
+            </div>
+          </div>
+          <!-- Max Iterations (hidden by default) -->
+          <div id="maxIterRow" class="hidden">
+            <label>Max Iterations</label>
+            <input type="number" id="maxIterInput" min="1" placeholder="e.g. 50" />
+          </div>
+          <div>
+            <label>Decimal Digits</label>
+            <input type="number" id="digitsInput" min="1" max="15" placeholder="0" />
+          </div>
+          <div class="full-width button-row">
+            <button id="solveBtn" class="solve-btn">Solve</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Linear Algebra Section -->
+    <div id="linearSection" class="section hidden">
+      <div class="card">
+        <h2 class="card-title">Select Method</h2>
+        <div class="method-row">
+          <select id="linearMethodSelect">
+            <option value="">Choose a method…</option>
+            <option value="gauss">Gaussian Elimination</option>
+            <option value="lu">The LU Factorization</option>
+            <option value="palu">The PA = LU Factorization</option>
+            <option value="gaussjordan">Gauss - Jordan</option>
+            <option value="cramer">Cramer's Rule</option>
+          </select>
+          <span id="linearMethodBadge" class="badge hidden"></span>
+        </div>
+      </div>
+      <div id="linearMethodError" class="error-box hidden" style="margin-top: 1rem;"></div>
+
+      <div id="linearInputSection" class="card hidden" style="margin-top: 1.5rem;">
+        <div class="method-row" style="margin-bottom: 1.5rem;">
+          <span class="badge" id="linearActiveMethodBadge" style="font-size: 1rem; padding: 0.5rem 1rem;">Gaussian Elimination</span>
+        </div>
+
+        <!-- Controls row -->
+        <div class="gauss-controls">
+          <div class="gauss-ctrl-group">
+            <label for="gaussSize">System Size</label>
+            <select id="gaussSize" style="width:9rem;">
+              <option value="2">2 × 2</option>
+              <option value="3" selected>3 × 3</option>
+              <option value="4">4 × 4</option>
+              <option value="5">5 × 5</option>
+              <option value="6">6 × 6</option>
+            </select>
+          </div>
+          <div class="gauss-ctrl-group">
+            <label for="gaussDigits">Decimal Digits</label>
+            <input type="number" id="gaussDigits" min="0" max="10" value="4" style="width:6rem;" />
+          </div>
+          <button id="gaussLoadExampleBtn" class="convert-btn">Load Example</button>
+          <button id="gaussSolveBtn" class="solve-btn">Solve</button>
+        </div>
+
+        <!-- Augmented matrix input -->
+        <div class="gauss-matrix-wrap">
+          <p class="gauss-matrix-hint">Enter the augmented matrix [A | b]</p>
+          <div id="gaussMatrixGrid" class="gauss-matrix-grid"></div>
+        </div>
+
+        <!-- Error box -->
+        <div id="gaussError" class="error-box hidden" style="margin-top:1rem;"></div>
+      </div>
+
+      <!-- Step-by-step output -->
+      <div id="gaussOutputCard" class="card hidden">
+        <h2 class="card-title">Solution Steps</h2>
+        <p id="gaussEnterHint" class="enter-hint hidden">
+          Press <kbd>Enter</kbd> to reveal the next step
+        </p>
+        <div id="gaussOutput" class="gauss-output"></div>
+      </div>
+    </div>
+
+    <!-- Chapter 3 Section -->
+    <div id="chapter3Section" class="section hidden">
+      <div class="card">
+        <h2 class="card-title">Chapter 3</h2>
+        <p>Content will be added later.</p>
+      </div>
+    </div>
+  </div>
+    </div>
+  </div>
+  <div id="errorBox" class="error-box hidden" style="margin-top: 1rem;"></div>
+    </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.2/math.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

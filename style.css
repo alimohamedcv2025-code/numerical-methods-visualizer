@@ -486,3 +486,217 @@ input:-webkit-autofill:focus {
   background-color: hsl(217, 33%, 25%);
   color: hsl(230, 100%, 65%);
 }
+
+/* ══════════════════════════════════════════
+   GAUSSIAN ELIMINATION — UI STYLES
+══════════════════════════════════════════ */
+
+/* Controls row */
+.gauss-controls {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.gauss-ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Augmented matrix input section */
+.gauss-matrix-wrap {
+  margin-top: 0.5rem;
+}
+.gauss-matrix-hint {
+  font-size: 0.85rem;
+  color: hsl(var(--text-muted));
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+.gauss-matrix-grid {
+  display: grid;
+  gap: 0.45rem;
+  align-items: center;
+}
+.gauss-cell {
+  text-align: center;
+  padding: 0.45rem 0.4rem !important;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+.gauss-b {
+  background: hsl(220, 30%, 23%) !important;
+  border-color: hsl(var(--accent)) !important;
+}
+.gauss-sep {
+  width: 2px;
+  align-self: stretch;
+  background: hsl(var(--accent));
+  opacity: 0.5;
+  border-radius: 2px;
+  justify-self: center;
+}
+
+/* ── Step-by-step output ─────────────────── */
+.gauss-output {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Section headers  (Initial Matrix, Forward Elimination, etc.) */
+.gs-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: hsl(var(--accent));
+  margin-top: 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid hsl(var(--border));
+  letter-spacing: 0.01em;
+}
+
+/* Pivot column announcement */
+.gs-pivot {
+  font-size: 0.875rem;
+  color: hsl(var(--text-muted));
+  padding: 0.3rem 0.6rem;
+  background: rgba(var(--accent-rgb), 0.07);
+  border-radius: 0.4rem;
+  border-left: 3px solid hsl(var(--accent));
+}
+
+/* Generic step line */
+.gs-line {
+  font-family: monospace;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.45rem;
+  animation: rowReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Multiplier: m₂₁ = a₂₁ / a₁₁ = 4 / 2 = 2 */
+.gs-multiplier {
+  background: hsl(220, 25%, 22%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.gs-lbl {
+  color: hsl(142, 80%, 55%);
+  font-weight: 700;
+  min-width: 3.5rem;
+}
+.gs-eq {
+  color: hsl(var(--text));
+}
+.gs-eq strong {
+  color: hsl(52, 100%, 60%);
+}
+
+/* Row operation: E₂ − (2)·E₁ → E₂ */
+.gs-rowop {
+  background: rgba(var(--accent-rgb), 0.1);
+  color: hsl(199, 90%, 75%);
+  font-style: italic;
+  border-left: 3px solid rgba(var(--accent-rgb), 0.6);
+}
+.gs-rowop strong {
+  color: hsl(52, 100%, 60%);
+  font-style: normal;
+}
+
+/* Matrix display */
+.gauss-mat-wrap {
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  animation: rowReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.gauss-mat {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0 auto;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+.gauss-mat td {
+  padding: 0.35rem 0.65rem;
+  white-space: nowrap;
+  background: transparent;
+}
+.gauss-mat tr:nth-child(odd) { background: transparent; }
+.gauss-mat tr:nth-child(even) { background: transparent; }
+.mat-cell {
+  text-align: right;
+  min-width: 3.5rem;
+  color: hsl(var(--text));
+  background: hsl(220, 22%, 22%);
+  border: 1px solid hsl(var(--border));
+}
+.mat-b {
+  color: hsl(var(--accent));
+  font-weight: 600;
+  background: hsl(220, 30%, 25%);
+}
+.mat-pipe {
+  color: hsl(var(--accent));
+  font-weight: 700;
+  padding: 0 0.2rem;
+  user-select: none;
+}
+.mat-brk-l, .mat-brk-r {
+  color: hsl(var(--text-muted));
+  font-size: 1.5rem;
+  font-weight: 300;
+  vertical-align: middle;
+  padding: 0 0.15rem;
+  user-select: none;
+}
+
+/* Back substitution step */
+.gs-backsub {
+  background: hsl(220, 25%, 22%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.gs-backsub strong {
+  color: hsl(142, 80%, 55%);
+}
+.gs-sub-detail {
+  color: hsl(var(--text-muted));
+  font-size: 0.82rem;
+}
+
+/* Final solution box */
+.gs-solution {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.gs-sol-row {
+  font-family: monospace;
+  font-size: 1.125rem;
+  background: linear-gradient(135deg, hsl(220, 30%, 23%), hsl(220, 28%, 26%));
+  border: 1px solid hsl(var(--accent));
+  border-radius: 0.6rem;
+  padding: 0.5rem 1.25rem;
+  color: hsl(var(--text));
+  box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.15);
+  animation: bounceIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.gs-sol-row span {
+  color: hsl(var(--accent));
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .gauss-controls { flex-direction: column; align-items: flex-start; }
+  .gauss-cell { font-size: 0.8rem; }
+  .gs-sol-row { font-size: 1rem; }
+}
+
