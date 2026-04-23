@@ -1,3 +1,285 @@
+Ali
+ali1_mohamed_35868
+Sharing their screen
+
+AhmedEnayet — 1/9/2026 4:14 PM
+
+
+
+Ali — 1/12/2026 1:42 PM
+هلا
+فتح كدا
+AhmedEnayet — 1/12/2026 1:48 PM
+اه
+Ali — 1/12/2026 1:50 PM
+ماشي يعم
+AhmedEnayet
+ started a call that lasted 11 minutes. — 1/12/2026 7:47 PM
+Ali — 1/12/2026 8:03 PM
+عنايب تعال هنا
+Ali — 1/12/2026 8:38 PM
+https://discord.gg/Vna7Bnmx
+Ali — 1/12/2026 9:36 PM
+https://discord.gg/Vna7Bnmx
+Ali
+ started a call that lasted an hour. — 2/28/2026 10:16 PM
+Ali
+ started a call that lasted 5 minutes. — 4/4/2026 8:36 PM
+Ali
+ started a call that lasted an hour. — 4/4/2026 8:59 PM
+Ali — 4/4/2026 9:12 PM
+
+
+Ali
+ started a call that lasted 3 hours. — 4/7/2026 12:38 AM
+Ali — 4/7/2026 12:43 AM
+
+
+AhmedEnayet — 4/7/2026 2:47 AM
+
+
+
+
+
+
+
+
+
+
+final
+
+
+
+
+Attachment file type: acrobat
+٢٠٢٣,٢٠٢٤.pdf
+1.74 MB
+Attachment file type: acrobat
+٢٤,٢٥.pdf
+1.56 MB
+Ali
+ started a call that lasted an hour. — 4/7/2026 3:58 AM
+Ali
+ started a call that lasted an hour. — 4/22/2026 8:26 PM
+Ali — 4/22/2026 9:16 PM
+https://github.com/shoshommm1253-ux/numerical-project.git
+GitHub
+GitHub - shoshommm1253-ux/numerical-project: .
+. Contribute to shoshommm1253-ux/numerical-project development by creating an account on GitHub.
+. Contribute to shoshommm1253-ux/numerical-project development by creating an account on GitHub.
+Ali
+ started a call that lasted 2 minutes. — 4/22/2026 9:28 PM
+Ali
+ started a call that lasted an hour. — Yesterday at 9:49 PM
+AhmedEnayet — Yesterday at 10:12 PM
+function gaussEliminate(M0, n, d) {
+    var M = M0.map(function (r) { return r.slice(); });
+    var steps = [];
+
+    var L = [];
+    for (var i = 0; i < n; i++) {
+
+message.txt
+7 KB
+AhmedEnayet — Yesterday at 10:24 PM
+Image
+Image
+Image
+Image
+Ali
+ started a call. — Yesterday at 10:34 PM
+AhmedEnayet — Yesterday at 10:39 PM
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+index.html
+11 KB
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+output.html
+2 KB
+// ─── Shared helpers ───
+function fEval(expr, x) {
+  return math.evaluate(expr, { x });
+}
+function fmt(n, digits) {
+  return n.toFixed(digits);... (14 KB left)
+
+script.js
+64 KB
+:root {
+  --accent: 199, 89%, 68%;
+  --accent-h: 199;
+  --accent-s: 89%;
+  --accent-l: 68%;
+  --accent-rgb: 72, 187, 220;
+
+style.css
+21 KB
+Ali — Yesterday at 11:02 PM
+Image
+AhmedEnayet — Yesterday at 11:10 PM
+انا بتكلم وسامعك
+انت مش سامعني
+Ali — Yesterday at 11:10 PM
+لا
+AhmedEnayet — 1:31 AM
+Image
+Image
+Image
+Image
+Image
+Bisection
+AhmedEnayet — 1:44 AM
+Image
+Image
+Gauss Jordan
+Image
+Image
+LU Decomposition
+Image
+Image
+Cramer
+AhmedEnayet — 1:57 AM
+Numerical Methods Visualizer
+An interactive web-based tool for solving and visualizing numerical root-finding, linear algebraic equations, and unconstrained optimization methods.
+
+Features
+Polynomial Functions (Root-Finding)
+Bisection Method
+False Position (Regula Falsi)
+Simple Fixed Point Iteration
+Newton-Raphson Method
+Secant Method
+
+Linear Algebraic Equations
+Gaussian Elimination
+LU Factorization
+Gauss-Jordan Elimination
+Cramer's Rule
+
+Unconstrained Optimization
+Golden Section Method (Maximize / Minimize)
+
+Visualization
+Function graph f(x)
+Convergence chart
+Error percentage chart
+
+Stopping Criteria
+Epsilon (tolerance %)
+Maximum iterations
+
+Other Features
+Automatic conversion from f(x) to g(x) for Fixed Point
+Automatic derivative calculation f'(x) for Newton-Raphson
+One-click Load Example pre-configured for each specific method
+Configurable decimal precision
+Responsive and modern UI design
+
+Project Structure
+project
+│
+├── index.html
+├── output.html
+├── style.css
+├── script.js
+├── README.md
+│
+├── input-page.png
+├── iterations.png
+├── graph.png
+└── convergence.png
+
+
+Input Page
+![Input Page](input-page.png)
+
+Iteration Results
+![Iterations Table](iterations.png)
+
+Function Graph
+![Function Graph](graph.png)
+
+Convergence Chart
+![Convergence Chart](convergence.png)
+
+Technologies Used
+HTML5
+CSS3
+JavaScript
+math.js
+Chart.js
+
+How to Run
+Download the project
+Open index.html in your browser
+Select a section (Polynomial, Linear, or Unconstrained)
+Choose the specific numerical method
+Enter the function and parameters (or click Load Example)
+Click Solve
+View the iterations tables and interactive graphs
+
+Example
+Function:
+-2 + 7x - 5x^2 + 6x^3
+
+
+Using Bisection Method:
+xl = 0
+xu = 1
+epsilon = 10%
+math.js
+Math.js is an extensive math library for JavaScript and Node.js. It features big numbers, complex numbers, matrices, units, and a flexible expression parser.
+Chart.js
+Simple yet flexible JavaScript charting library for the modern web
+Chart.js
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+index.html
+11 KB
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+output.html
+2 KB
+// ─── Shared helpers ───
+function fEval(expr, x) {
+  return math.evaluate(expr, { x });
+}
+function fmt(n, digits) {
+  return n.toFixed(digits);... (15 KB left)
+
+script.js
+65 KB
+:root {
+  --accent: 199, 89%, 68%;
+  --accent-h: 199;
+  --accent-s: 89%;
+  --accent-l: 68%;
+  --accent-rgb: 72, 187, 220;
+
+style.css
+21 KB
+﻿
 :root {
   --accent: 199, 89%, 68%;
   --accent-h: 199;
@@ -14,11 +296,13 @@
   --bg-from: 222, 40%, 10%;
   --bg-to: 235, 35%, 7%;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   background: radial-gradient(ellipse 140% 90% at 50% -10%, hsl(218, 35%, 14%), hsl(222, 40%, 10%) 45%, hsl(235, 35%, 7%) 100%);
@@ -26,6 +310,7 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
 body::before {
   content: "";
   position: fixed;
@@ -34,6 +319,7 @@ body::before {
   pointer-events: none;
   z-index: 0;
 }
+
 .container {
   max-width: 72rem;
   margin: 0 auto;
@@ -45,6 +331,7 @@ body::before {
   position: relative;
   z-index: 1;
 }
+
 .title {
   font-size: 2.25rem;
   font-weight: 700;
@@ -58,6 +345,7 @@ body::before {
   filter: drop-shadow(0 0 24px var(--glow));
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both, shimmer 5s linear infinite;
 }
+
 .card {
   width: 100%;
   background: hsl(var(--surface));
@@ -68,14 +356,25 @@ body::before {
   animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   transition: box-shadow 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
 }
-.card:nth-child(2) { animation-delay: 0.08s; }
-.card:nth-child(3) { animation-delay: 0.16s; }
-.card:nth-child(4) { animation-delay: 0.24s; }
+
+.card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.card:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
 .card:hover {
   box-shadow: 0 8px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(var(--accent-rgb), 0.12), 0 0 40px var(--glow);
   border-color: hsl(220, 22%, 35%);
   transform: translateY(-3px);
 }
+
 .card-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -84,16 +383,19 @@ body::before {
   letter-spacing: -0.01em;
   animation: fadeIn 0.5s ease both;
 }
+
 .method-row {
   display: flex;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
 }
+
 .method-label {
   font-size: 1rem;
   color: hsl(var(--text-muted));
 }
+
 select {
   width: 16rem;
   padding: 0.55rem 1rem;
@@ -113,18 +415,22 @@ select {
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.15), 0 0 20px rgba(var(--accent-rgb), 0.1);
   animation: fieldIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 select:hover {
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), 0 0 24px rgba(var(--accent-rgb), 0.15);
 }
+
 select:focus {
   box-shadow: 0 0 0 2px hsl(var(--accent)), 0 0 0 4px rgba(var(--accent-rgb), 0.2), 0 0 28px var(--glow-strong);
   border-color: hsl(var(--accent));
 }
+
 select option {
   background: hsl(var(--surface));
   color: hsl(var(--text));
   padding: 0.5rem;
 }
+
 .badge {
   display: inline-block;
   padding: 0.3rem 0.85rem;
@@ -136,37 +442,101 @@ select option {
   border: 1px solid rgba(var(--accent-rgb), 0.35);
   animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
-.form-grid > * {
+
+.form-grid>* {
   animation: fieldIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.form-grid > *:nth-child(1) { animation-delay: 0.05s; }
-.form-grid > *:nth-child(2) { animation-delay: 0.1s; }
-.form-grid > *:nth-child(3) { animation-delay: 0.15s; }
-.form-grid > *:nth-child(4) { animation-delay: 0.2s; }
-.form-grid > *:nth-child(5) { animation-delay: 0.25s; }
-.form-grid > *:nth-child(6) { animation-delay: 0.3s; }
-.form-grid > *:nth-child(7) { animation-delay: 0.35s; }
-.form-grid > *:nth-child(8) { animation-delay: 0.4s; }
-.form-grid > *:nth-child(9) { animation-delay: 0.45s; }
-.form-grid > *:nth-child(10) { animation-delay: 0.5s; }
-.form-grid > *:nth-child(11) { animation-delay: 0.55s; }
-.form-grid > *:nth-child(12) { animation-delay: 0.6s; }
-.form-grid > *:nth-child(13) { animation-delay: 0.65s; }
-.form-grid > *:nth-child(14) { animation-delay: 0.7s; }
-.form-grid > *:nth-child(15) { animation-delay: 0.75s; }
-.form-grid > *:nth-child(16) { animation-delay: 0.8s; }
-.form-grid > *:nth-child(17) { animation-delay: 0.85s; }
-.form-grid > *:nth-child(18) { animation-delay: 0.9s; }
-.form-grid > *:nth-child(19) { animation-delay: 0.95s; }
-.form-grid > *:nth-child(20) { animation-delay: 1s; }
+
+.form-grid>*:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.form-grid>*:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.form-grid>*:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.form-grid>*:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.form-grid>*:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.form-grid>*:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.form-grid>*:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.form-grid>*:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.form-grid>*:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+.form-grid>*:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+.form-grid>*:nth-child(11) {
+  animation-delay: 0.55s;
+}
+
+.form-grid>*:nth-child(12) {
+  animation-delay: 0.6s;
+}
+
+.form-grid>*:nth-child(13) {
+  animation-delay: 0.65s;
+}
+
+.form-grid>*:nth-child(14) {
+  animation-delay: 0.7s;
+}
+
+.form-grid>*:nth-child(15) {
+  animation-delay: 0.75s;
+}
+
+.form-grid>*:nth-child(16) {
+  animation-delay: 0.8s;
+}
+
+.form-grid>*:nth-child(17) {
+  animation-delay: 0.85s;
+}
+
+.form-grid>*:nth-child(18) {
+  animation-delay: 0.9s;
+}
+
+.form-grid>*:nth-child(19) {
+  animation-delay: 0.95s;
+}
+
+.form-grid>*:nth-child(20) {
+  animation-delay: 1s;
+}
+
 .full-width {
   grid-column: 1 / -1;
 }
+
 label {
   display: block;
   font-size: 0.875rem;
@@ -174,6 +544,7 @@ label {
   margin-bottom: 0.35rem;
   transition: color 0.3s ease;
 }
+
 input[type="text"],
 input[type="number"] {
   width: 100%;
@@ -187,22 +558,28 @@ input[type="number"] {
   transition: all 0.35s ease;
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.15), 0 0 20px rgba(var(--accent-rgb), 0.1);
 }
+
 input:hover {
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), 0 0 24px rgba(var(--accent-rgb), 0.15);
 }
+
 input:focus {
   box-shadow: 0 0 0 2px hsl(var(--accent)), 0 0 0 4px rgba(var(--accent-rgb), 0.2), 0 0 28px var(--glow-strong);
   border-color: hsl(var(--accent));
 }
+
 input::placeholder {
   color: hsl(var(--text-muted));
 }
+
 .input-with-suffix {
   position: relative;
 }
+
 .input-with-suffix input {
   padding-right: 2rem;
 }
+
 .suffix {
   position: absolute;
   right: 0.75rem;
@@ -211,6 +588,7 @@ input::placeholder {
   color: hsl(var(--text-muted));
   font-weight: 600;
 }
+
 .convert-row {
   display: flex;
   align-items: center;
@@ -219,6 +597,7 @@ input::placeholder {
   gap: 0.75rem;
   margin-bottom: 0.25rem;
 }
+
 .convert-btn {
   padding: 0.5rem 1.25rem;
   border: none;
@@ -233,20 +612,24 @@ input::placeholder {
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
   animation: btnGlow 3s ease-in-out infinite;
 }
+
 .convert-btn:hover {
   transform: scale(1.06);
   box-shadow: 0 6px 28px rgba(var(--accent-rgb), 0.5), 0 0 36px var(--glow);
   filter: brightness(1.1);
 }
+
 .convert-btn:active {
   transform: scale(0.97);
   box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.35);
 }
+
 .button-row {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+
 .solve-btn {
   padding: 0.6rem 2rem;
   border: none;
@@ -260,20 +643,38 @@ input::placeholder {
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
   animation: btnGlow 3s ease-in-out infinite;
 }
+
 .solve-btn:hover {
   transform: scale(1.06);
   box-shadow: 0 6px 32px rgba(var(--accent-rgb), 0.5), 0 0 40px var(--glow);
   filter: brightness(1.1);
 }
+
 .solve-btn:active {
   transform: scale(0.97);
   box-shadow: 0 2px 14px rgba(var(--accent-rgb), 0.35);
 }
+
 .enter-hint {
   font-size: 0.875rem;
   color: hsl(var(--text-muted));
   animation: fadeIn 0.5s ease-out 0.2s both;
 }
+
+.step-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.step-btn {
+  padding: 0.4rem 1rem;
+  font-size: 0.875rem;
+}
+
 kbd {
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
@@ -283,6 +684,7 @@ kbd {
   font-family: monospace;
   animation: fadeIn 0.4s ease both;
 }
+
 .error-box {
   width: 100%;
   padding: 1rem;
@@ -293,17 +695,21 @@ kbd {
   font-size: 0.875rem;
   animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .table-wrapper {
   overflow-x: auto;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
 }
+
 thead tr {
   background: rgba(var(--accent-rgb), 0.15);
 }
+
 th {
   padding: 0.75rem;
   text-align: left;
@@ -311,24 +717,30 @@ th {
   color: hsl(var(--accent));
   white-space: nowrap;
 }
+
 td {
   padding: 0.75rem;
   font-family: monospace;
   white-space: nowrap;
 }
+
 tbody tr:nth-child(odd) {
   background: hsl(220, 22%, 22%);
 }
+
 tbody tr:nth-child(even) {
   background: hsl(var(--surface));
 }
+
 tbody tr {
   animation: rowReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 td.highlight {
   color: hsl(var(--accent));
   font-weight: 600;
 }
+
 .tabs {
   display: flex;
   gap: 0.25rem;
@@ -340,6 +752,7 @@ td.highlight {
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.1), 0 0 16px rgba(var(--accent-rgb), 0.06);
   animation: fadeIn 0.5s ease both;
 }
+
 .tab-btn {
   padding: 0.4rem 1rem;
   border: none;
@@ -351,32 +764,39 @@ td.highlight {
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .tab-btn.active {
   background: hsl(var(--surface));
   color: hsl(var(--text));
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 12px rgba(var(--accent-rgb), 0.1);
 }
+
 .tab-btn:hover:not(.active) {
   color: hsl(var(--text));
 }
+
 .tab-content {
   display: none;
   height: 350px;
 }
+
 .tab-content.active {
   display: block;
 }
+
 .result-box {
   width: 100%;
   text-align: center;
   animation: bounceIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .success-text {
   color: hsl(142, 80%, 45%);
   font-weight: 600;
   font-size: 1.125rem;
   margin-bottom: 0.5rem;
 }
+
 .root-text {
   color: hsl(var(--accent));
   font-size: 1.875rem;
@@ -384,6 +804,7 @@ td.highlight {
   font-family: monospace;
   letter-spacing: 0.05em;
 }
+
 .back-link {
   color: hsl(var(--accent));
   text-decoration: none;
@@ -391,77 +812,193 @@ td.highlight {
   margin-top: 1rem;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 .back-link:hover {
   opacity: 0.85;
   transform: translateX(-4px);
 }
+
 .hidden {
   display: none !important;
 }
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
+
 @keyframes fieldIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.85); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
 @keyframes bounceIn {
-  0% { opacity: 0; transform: scale(0.6) translateY(16px); }
-  50% { opacity: 1; transform: scale(1.05) translateY(-4px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(16px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
+
 @keyframes rowReveal {
-  from { opacity: 0; transform: translateX(-16px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
+
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
+
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.4); }
-  50% { box-shadow: 0 6px 32px rgba(var(--accent-rgb), 0.5), 0 0 36px var(--glow); }
+
+  0%,
+  100% {
+    box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.4);
+  }
+
+  50% {
+    box-shadow: 0 6px 32px rgba(var(--accent-rgb), 0.5), 0 0 36px var(--glow);
+  }
 }
+
 @keyframes btnGlow {
-  0%, 100% { box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.4), 0 0 28px rgba(var(--accent-rgb), 0.15); }
-  50% { box-shadow: 0 6px 28px rgba(var(--accent-rgb), 0.5), 0 0 40px var(--glow); }
+
+  0%,
+  100% {
+    box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.4), 0 0 28px rgba(var(--accent-rgb), 0.15);
+  }
+
+  50% {
+    box-shadow: 0 6px 28px rgba(var(--accent-rgb), 0.5), 0 0 40px var(--glow);
+  }
 }
+
 @keyframes methodEnter {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
+
 @media (max-width: 640px) {
-  .title { font-size: 1.5rem; }
-  .form-grid { grid-template-columns: 1fr; }
-  select { width: 100%; }
-  .tabs { width: 100%; }
-  .tab-btn { flex: 1; text-align: center; font-size: 0.75rem; padding: 0.4rem 0.5rem; }
-  .convert-row { flex-direction: column; align-items: flex-start; }
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .convert-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px hsl(220, 24%, 20%) inset !important;
   -webkit-text-fill-color: hsl(var(--text)) !important;
 }
+
 .section-btn {
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid hsl(217, 33%, 25%); 
-  background-color: hsl(217, 33%, 17%); 
+  border: 1px solid hsl(217, 33%, 25%);
+  background-color: hsl(217, 33%, 17%);
   color: hsl(215, 20%, 65%);
   cursor: pointer;
   font-weight: bold;
@@ -470,7 +1007,7 @@ input:-webkit-autofill:focus {
 }
 
 .section-btn.active {
-  background-color: hsl(230, 100%, 65%); 
+  background-color: hsl(230, 100%, 65%);
   color: white;
 }
 
@@ -499,6 +1036,7 @@ input:-webkit-autofill:focus {
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
 .gauss-ctrl-group {
   display: flex;
   flex-direction: column;
@@ -509,34 +1047,26 @@ input:-webkit-autofill:focus {
 .gauss-matrix-wrap {
   margin-top: 0.5rem;
 }
+
 .gauss-matrix-hint {
   font-size: 0.85rem;
   color: hsl(var(--text-muted));
   margin-bottom: 0.75rem;
   font-style: italic;
 }
-.gauss-matrix-grid {
-  display: grid;
-  gap: 0.45rem;
-  align-items: center;
+
+.gauss-equations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
-.gauss-cell {
-  text-align: center;
-  padding: 0.45rem 0.4rem !important;
+
+.gauss-equation-input {
+  width: 100%;
+  padding: 0.6rem 1rem !important;
   font-family: monospace;
-  font-size: 0.95rem;
-}
-.gauss-b {
-  background: hsl(220, 30%, 23%) !important;
-  border-color: hsl(var(--accent)) !important;
-}
-.gauss-sep {
-  width: 2px;
-  align-self: stretch;
-  background: hsl(var(--accent));
-  opacity: 0.5;
-  border-radius: 2px;
-  justify-self: center;
+  font-size: 1rem;
+  text-align: left;
 }
 
 /* ── Step-by-step output ─────────────────── */
@@ -584,14 +1114,17 @@ input:-webkit-autofill:focus {
   align-items: center;
   gap: 0.75rem;
 }
+
 .gs-lbl {
   color: hsl(142, 80%, 55%);
   font-weight: 700;
   min-width: 3.5rem;
 }
+
 .gs-eq {
   color: hsl(var(--text));
 }
+
 .gs-eq strong {
   color: hsl(52, 100%, 60%);
 }
@@ -603,6 +1136,7 @@ input:-webkit-autofill:focus {
   font-style: italic;
   border-left: 3px solid rgba(var(--accent-rgb), 0.6);
 }
+
 .gs-rowop strong {
   color: hsl(52, 100%, 60%);
   font-style: normal;
@@ -614,6 +1148,7 @@ input:-webkit-autofill:focus {
   padding: 0.5rem 0;
   animation: rowReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .gauss-mat {
   border-collapse: separate;
   border-spacing: 0;
@@ -621,13 +1156,21 @@ input:-webkit-autofill:focus {
   font-family: monospace;
   font-size: 0.9rem;
 }
+
 .gauss-mat td {
   padding: 0.35rem 0.65rem;
   white-space: nowrap;
   background: transparent;
 }
-.gauss-mat tr:nth-child(odd) { background: transparent; }
-.gauss-mat tr:nth-child(even) { background: transparent; }
+
+.gauss-mat tr:nth-child(odd) {
+  background: transparent;
+}
+
+.gauss-mat tr:nth-child(even) {
+  background: transparent;
+}
+
 .mat-cell {
   text-align: right;
   min-width: 3.5rem;
@@ -635,18 +1178,22 @@ input:-webkit-autofill:focus {
   background: hsl(220, 22%, 22%);
   border: 1px solid hsl(var(--border));
 }
+
 .mat-b {
   color: hsl(var(--accent));
   font-weight: 600;
   background: hsl(220, 30%, 25%);
 }
+
 .mat-pipe {
   color: hsl(var(--accent));
   font-weight: 700;
   padding: 0 0.2rem;
   user-select: none;
 }
-.mat-brk-l, .mat-brk-r {
+
+.mat-brk-l,
+.mat-brk-r {
   color: hsl(var(--text-muted));
   font-size: 1.5rem;
   font-weight: 300;
@@ -662,9 +1209,11 @@ input:-webkit-autofill:focus {
   flex-direction: column;
   gap: 0.2rem;
 }
+
 .gs-backsub strong {
   color: hsl(142, 80%, 55%);
 }
+
 .gs-sub-detail {
   color: hsl(var(--text-muted));
   font-size: 0.82rem;
@@ -677,6 +1226,7 @@ input:-webkit-autofill:focus {
   gap: 0.75rem;
   margin-top: 0.5rem;
 }
+
 .gs-sol-row {
   font-family: monospace;
   font-size: 1.125rem;
@@ -688,6 +1238,7 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.15);
   animation: bounceIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .gs-sol-row span {
   color: hsl(var(--accent));
   font-weight: 700;
@@ -695,8 +1246,16 @@ input:-webkit-autofill:focus {
 }
 
 @media (max-width: 640px) {
-  .gauss-controls { flex-direction: column; align-items: flex-start; }
-  .gauss-cell { font-size: 0.8rem; }
-  .gs-sol-row { font-size: 1rem; }
-}
+  .gauss-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
+  .gauss-cell {
+    font-size: 0.8rem;
+  }
+
+  .gs-sol-row {
+    font-size: 1rem;
+  }
+}
