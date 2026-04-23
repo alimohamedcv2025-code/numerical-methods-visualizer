@@ -91,7 +91,7 @@ project
 
 ---
 
-# Gaussian Elimination Section
+# Gauss Elimination Section
 
 ## Section Selection & Matrix Input
 ![Matrix Input](linear-methods-selection.png.png)
@@ -101,6 +101,14 @@ project
 
 ## Final Matrix & Solution
 ![Final Solution](gaussian-elimination-matrix.png.png)
+
+# Gauss Jordan Section
+## Section Selection & Matrix Input
+![Matrix Input](Input.jpeg)
+
+## Final Matrix & Solution
+![Final Solution](Output.jpeg)
+
 
 ---
 
