@@ -109,6 +109,21 @@ project
 ## Final Matrix & Solution
 ![Final Solution](Output.jpeg)
 
+# LU Factorization  Section
+## Section Selection & Matrix Input
+![Matrix Input](input_LU.jpeg)
+
+## Final Matrix & Solution
+![Final Solution](Output_LU.jpeg)
+
+# Cramer Section
+## Section Selection & Matrix Input
+![Matrix Input](Input_cramer.jpeg)
+
+## Final Matrix & Solution
+![Final Solution](Output_cramer.jpeg)
+
+
 
 ---
 
