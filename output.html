@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,14 +9,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.2/math.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
+
 <body>
   <div class="container">
     <h1 class="title">Results</h1>
     <p id="methodLabel" class="method-label"></p>
-    <span id="enterHint" class="enter-hint">
-      Press <kbd>Enter</kbd> to reveal next step
-    </span>
-    <div id="tableCard" class="card">
+    <div class="step-controls" id="polyStepControls">
+      <button id="allStepsBtn" class="solve-btn step-btn">Show All Steps</button>
+    </div>
+    <div id="tableCard" class="card hidden">
       <div class="table-wrapper">
         <table>
           <thead id="tableHead"></thead>
@@ -48,4 +50,5 @@
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>
