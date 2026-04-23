@@ -1192,4 +1192,382 @@ if (linearMethodSelect) {
           html += '<div class="gs-solution">';
           for (var sv = 0; sv < st.payload.length; sv++) {
             html += '<div class="gs-sol-row">x' + sub(st.payload[sv].xi) +
-              ' = <span>' + st.payload[sv].val ... (15 KB left)
+              ' = <span>' + st.payload[sv].val + '</span></div>';
+          }
+          html += '</div>';
+          break;
+      }
+    }
+    return html;
+  }
+
+  // ── Step-by-step state ────────────────────────────────────────
+  var gaussState = {
+    steps: [],
+    visible: 0,
+    n: 3,
+    d: 4,
+    finished: false,
+    active: false,
+    varArray: null
+  };
+
+  function getVarName(index) {
+    if (gaussState.varArray && gaussState.varArray.length > 0) {
+      if (index - 1 < gaussState.varArray.length) {
+        return gaussState.varArray[index - 1];
+      }
+    }
+    return 'x' + sub(index);
+  }
+
+  // Renders one step block and appends it to the output container
+  function renderOneStep(st) {
+    var n = gaussState.n, d = gaussState.d;
+    var html = '';
+    switch (st.type) {
+      case 'header':
+        html = '<div class="gs-header">' + st.payload + '</div>';
+        break;
+      case 'pivot-col':
+        var jj = st.payload;
+        html = '<div class="gs-pivot">Pivot column: <strong>j = ' + (jj + 1) + '</strong>' +
+          '&nbsp;&nbsp;(pivot element = a' + sub(jj + 1) + sub(jj + 1) + ')</div>';
+        break;
+      case 'multiplier':
+        var p = st.payload;
+        html = '<div class="gs-line gs-multiplier">' +
+          '<span class="gs-lbl">' + p.label + '</span>' +
+          '<span class="gs-eq">= ' + p.top + ' / ' + p.bot +
+          ' = ' + p.topVal + ' / ' + p.botVal +
+          ' = <strong>' + p.mVal + '</strong></span>' +
+          '</div>';
+        break;
+      case 'row-op':
+        var ro = st.payload;
+        html = '<div class="gs-line gs-rowop">' +
+          'E' + sub(ro.i) + ' &minus; (<strong>' + ro.m + '</strong>) &middot; E' + sub(ro.j) +
+          ' &rarr; E' + sub(ro.i) +
+          '</div>';
+        break;
+      case 'matrix':
+        html = matrixHTML(st.payload, n, d);
+        break;
+      case 'back-sub':
+        var bs = st.payload;
+        var formula = getVarName(bs.xi) + ' = (' + bs.bVal;
+        for (var t = 0; t < bs.terms.length; t++) {
+          formula += ' &minus; (' + bs.terms[t].coef + ')&middot;' + getVarName(bs.terms[t].xk);
+        }
+        formula += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
+        var subst = getVarName(bs.xi) + ' = (' + bs.bVal;
+        for (var t2 = 0; t2 < bs.terms.length; t2++) {
+          subst += ' &minus; (' + bs.terms[t2].coef + ')&middot;(' + bs.terms[t2].val + ')';
+        }
+        subst += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
+        html = '<div class="gs-line gs-backsub">' +
+          '<div>' + formula + '</div>' +
+          (bs.terms.length > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
+          '</div>';
+        break;
+      case 'cramer-det':
+        var cd = st.payload;
+        html = '<div class="gs-header">' + cd.label + ' = <strong>' + cd.det + '</strong></div>' +
+          squareMatrixHTML(cd.mat, n, d);
+        break;
+      case 'cramer-sub':
+        var cs = st.payload;
+        html = '<div class="gs-line" style="margin-bottom: 1.5rem;">' +
+          '<div class="gs-header">' + cs.label + ' = <strong>' + cs.det + '</strong></div>' +
+          squareMatrixHTML(cs.mat, n, d) +
+          '<div class="gs-backsub" style="margin-top: 0.5rem; background: rgba(0,0,0,0.1); padding: 0.5rem; border-radius: 4px;">' +
+          cs.varName + ' = ' + cs.label + ' / D = ' + cs.det + ' / ' + cs.D + ' = <strong>' + cs.xi + '</strong>' +
+          '</div>' +
+          '</div>';
+        break;
+      case 'solution':
+        html = '<div><div class="gs-header">Final Solution</div>' +
+          '<div class="gs-solution">';
+        for (var sv = 0; sv < st.payload.length; sv++) {
+          html += '<div class="gs-sol-row">' + getVarName(st.payload[sv].xi) +
+            ' = <span>' + st.payload[sv].val + '</span></div>';
+        }
+        html += '</div></div>';
+        break;
+    }
+    var el = document.createElement('div');
+    el.innerHTML = html;
+    gaussOutputEl.appendChild(el.firstElementChild || el);
+  }
+
+  function gaussShowNext() {
+    if (gaussState.finished || !gaussState.active) return;
+    if (gaussState.visible < gaussState.steps.length) {
+      renderOneStep(gaussState.steps[gaussState.visible]);
+      gaussState.visible++;
+      // Scroll the new step into view
+      gaussOutputEl.lastElementChild &&
+        gaussOutputEl.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    if (gaussState.visible >= gaussState.steps.length) {
+      gaussState.finished = true;
+    }
+  }
+
+  // ── Solve button click ────────────────────────────────────────
+  gaussSolveBtn.addEventListener('click', function () {
+    gaussErrorEl.classList.add('hidden');
+    gaussOutputCard.classList.add('hidden');
+    gaussOutputEl.innerHTML = '';
+
+    var n = +gaussSizeEl.value;
+    var d = parseInt(gaussDigitsEl.value);
+    if (isNaN(d) || d < 0) d = 4;
+
+    var M = readMatrix(n);
+    if (!M) {
+      gaussErrorEl.textContent = 'Please fill in all equations properly.';
+      gaussErrorEl.classList.remove('hidden');
+      return;
+    }
+
+    const m = document.getElementById('linearMethodSelect').value || 'gauss';
+
+    // Check for zero pivot (only for Gauss-based methods)
+    const usePivoting = document.getElementById("pivotingSelect").value === "with";
+
+    if (m !== 'cramer' && !(m === 'gaussjordan' && usePivoting)) {
+      var tempM = M.map(function (r) { return r.slice(); });
+      for (var j = 0; j < n; j++) {
+        if (Math.abs(tempM[j][j]) < 1e-14) {
+          gaussErrorEl.textContent =
+            'Pivot a' + (j + 1) + (j + 1) + ' = 0. The matrix may be singular or requires partial pivoting.';
+          gaussErrorEl.classList.remove('hidden');
+          return;
+        }
+      }
+    }
+
+    if (m === 'cramer') {
+      var result = cramerSolve(M, n, d);
+      gaussState.steps = result.steps;
+      gaussState.visible = 0;
+      gaussState.n = n;
+      gaussState.d = d;
+      gaussState.finished = false;
+      gaussState.active = true;
+
+      gaussOutputCard.classList.remove('hidden');
+      document.getElementById('gaussLUBtn').classList.add('hidden');
+      document.getElementById('luOutput').innerHTML = '';
+      gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (result.error) {
+        document.getElementById('gaussAllStepsBtn').classList.add('hidden');
+        renderOneStep(gaussState.steps[gaussState.steps.length - 1]); // Show error step
+      } else {
+        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
+        renderOneStep(gaussState.steps[gaussState.steps.length - 1]); // Show final solution
+      }
+
+    } else if (m === 'gaussjordan') {
+      var result = gaussJordanEliminate(M, n, d, usePivoting);
+      gaussState.steps = result.steps;
+      gaussState.visible = 0;
+      gaussState.n = n;
+      gaussState.d = d;
+      gaussState.finished = false;
+      gaussState.active = true;
+
+      gaussOutputCard.classList.remove('hidden');
+      document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
+      document.getElementById('gaussLUBtn').classList.add('hidden');
+      document.getElementById('luOutput').innerHTML = '';
+      gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
+
+    } else {
+      var result = gaussEliminate(M, n, d);
+      gaussState.steps = result.steps;
+      gaussState.visible = 0;
+      gaussState.n = n;
+      gaussState.d = d;
+      gaussState.finished = false;
+      gaussState.active = true;
+      gaussState.L = result.L;
+      gaussState.U = result.U;
+      gaussState.origB = result.origB;
+
+      gaussOutputCard.classList.remove('hidden');
+
+      if (m === 'lu') {
+        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
+        document.getElementById('gaussLUBtn').classList.add('hidden');
+        document.getElementById('luOutput').innerHTML = ''; // clear previous LU output
+        gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
+      } else { // gauss
+        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
+        document.getElementById('gaussLUBtn').classList.remove('hidden');
+        document.getElementById('luOutput').innerHTML = ''; // clear previous LU output
+        gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
+      }
+    }
+  });
+
+  // ── Button clicks advance steps ───────────────────────────────
+  document.getElementById('gaussAllStepsBtn').addEventListener('click', function () {
+    if (gaussState.active && !gaussState.finished) {
+      gaussOutputEl.innerHTML = '';
+      const m = document.getElementById('linearMethodSelect').value || 'gauss';
+      if (m === 'lu') {
+        renderLUOutput();
+      } else {
+        for (var i = 0; i < gaussState.steps.length; i++) {
+          renderOneStep(gaussState.steps[i]);
+        }
+      }
+      gaussState.finished = true;
+      this.classList.add('hidden');
+    }
+  });
+
+  function renderLUOutput() {
+    var luOutput = document.getElementById('luOutput');
+    luOutput.innerHTML = '';
+
+    var n = gaussState.n;
+    var d = gaussState.d;
+    var L = gaussState.L;
+    var U = gaussState.U;
+    var b = gaussState.origB;
+
+    function addHeader(title) {
+      var el = document.createElement('div');
+      el.className = 'gs-header';
+      el.textContent = title;
+      luOutput.appendChild(el);
+    }
+
+    function addMatrix(M_in, isAugmented) {
+      var html = '<div class="gauss-mat-wrap"><table class="gauss-mat">';
+      for (var i = 0; i < n; i++) {
+        html += '<tr><td class="mat-brk-l">[</td>';
+        for (var j = 0; j < n; j++) {
+          html += '<td class="mat-cell">' + pn(M_in[i][j], d) + '</td>';
+        }
+        if (isAugmented) {
+          html += '<td class="mat-pipe"> | </td>';
+          html += '<td class="mat-cell mat-b">' + pn(M_in[i][n], d) + '</td>';
+        }
+        html += '<td class="mat-brk-r">]</td></tr>';
+      }
+      html += '</table></div>';
+      var el = document.createElement('div');
+      el.innerHTML = html;
+      luOutput.appendChild(el.firstElementChild || el);
+    }
+
+    addHeader('L Matrix (from Multipliers)');
+    addMatrix(L, false);
+
+    addHeader('U Matrix (from Forward Elimination)');
+    addMatrix(U, false);
+
+    addHeader('Step 1: Solve Ly = b (Forward Substitution)');
+    var Laug = [];
+    for (var i = 0; i < n; i++) {
+      var r = L[i].slice();
+      r.push(b[i]);
+      Laug.push(r);
+    }
+    addMatrix(Laug, true);
+
+    var y = new Array(n).fill(0);
+    for (var ii = 0; ii < n; ii++) {
+      var sum = b[ii];
+      var formula = 'y' + sub(ii + 1) + ' = (' + pn(b[ii], d);
+      var subst = 'y' + sub(ii + 1) + ' = (' + pn(b[ii], d);
+      var terms = 0;
+      for (var kk = 0; kk < ii; kk++) {
+        sum -= L[ii][kk] * y[kk];
+        formula += ' &minus; (' + pn(L[ii][kk], d) + ')&middot;y' + sub(kk + 1);
+        subst += ' &minus; (' + pn(L[ii][kk], d) + ')&middot;(' + pn(y[kk], d) + ')';
+        terms++;
+      }
+      y[ii] = sum / L[ii][ii];
+      formula += ') / ' + pn(L[ii][ii], d) + ' = <strong>' + pn(y[ii], d) + '</strong>';
+      subst += ') / ' + pn(L[ii][ii], d) + ' = <strong>' + pn(y[ii], d) + '</strong>';
+
+      var html = '<div class="gs-line gs-backsub">' +
+        '<div>' + formula + '</div>' +
+        (terms > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
+        '</div>';
+      var el = document.createElement('div');
+      el.innerHTML = html;
+      luOutput.appendChild(el.firstElementChild || el);
+    }
+
+    addHeader('Step 2: Solve Ux = y (Backward Substitution)');
+    var Uaug = [];
+    for (var i = 0; i < n; i++) {
+      var r = U[i].slice();
+      r.push(y[i]);
+      Uaug.push(r);
+    }
+    addMatrix(Uaug, true);
+
+    var x = new Array(n).fill(0);
+    for (var ii = n - 1; ii >= 0; ii--) {
+      var sum = y[ii];
+      var formula = getVarName(ii + 1) + ' = (' + pn(y[ii], d);
+      var subst = getVarName(ii + 1) + ' = (' + pn(y[ii], d);
+      var terms = 0;
+      for (var kk = ii + 1; kk < n; kk++) {
+        sum -= U[ii][kk] * x[kk];
+        formula += ' &minus; (' + pn(U[ii][kk], d) + ')&middot;' + getVarName(kk + 1);
+        subst += ' &minus; (' + pn(U[ii][kk], d) + ')&middot;(' + pn(x[kk], d) + ')';
+        terms++;
+      }
+      x[ii] = sum / U[ii][ii];
+      formula += ') / ' + pn(U[ii][ii], d) + ' = <strong>' + pn(x[ii], d) + '</strong>';
+      subst += ') / ' + pn(U[ii][ii], d) + ' = <strong>' + pn(x[ii], d) + '</strong>';
+
+      var html = '<div class="gs-line gs-backsub">' +
+        '<div>' + formula + '</div>' +
+        (terms > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
+        '</div>';
+      var el = document.createElement('div');
+      el.innerHTML = html;
+      luOutput.appendChild(el.firstElementChild || el);
+    }
+
+    addHeader('Final Solution (from LU)');
+    var solHtml = '<div class="gs-solution">';
+    for (var sv = 0; sv < n; sv++) {
+      solHtml += '<div class="gs-sol-row">' + getVarName(sv + 1) +
+        ' = <span>' + pn(x[sv], d) + '</span></div>';
+    }
+    solHtml += '</div>';
+    var solEl = document.createElement('div');
+    solEl.innerHTML = solHtml;
+    luOutput.appendChild(solEl.firstElementChild || solEl);
+
+    luOutput.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.getElementById('gaussLUBtn').addEventListener('click', function () {
+    if (!gaussState.active) return;
+
+    // Automatically finish Gauss steps
+    if (!gaussState.finished) {
+      document.getElementById('gaussAllStepsBtn').click();
+    }
+
+    this.classList.add('hidden'); // Hide the LU button itself
+    renderLUOutput();
+
+  });
+}());
+
