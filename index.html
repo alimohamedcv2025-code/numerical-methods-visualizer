@@ -25,8 +25,8 @@
           Linear Algebraic Equation
         </button>
 
-        <button class="section-btn" data-section="chapter3Section">
-          Chapter 3
+        <button class="section-btn" data-section="UnconstrainedSection">
+          Unconstrained Optimization
         </button>
       </div>
     </div>
@@ -56,7 +56,7 @@
         <div class="method-row" style="margin-bottom: 1.5rem;">
           <span class="badge" id="polyActiveMethodBadge" style="font-size: 1rem; padding: 0.5rem 1rem;"></span>
         </div>
-        
+
         <h2 class="card-title">Input Parameters</h2>
         <div class="form-grid">
           <div class="full-width" id="funcRow">
@@ -71,8 +71,11 @@
             <input type="text" id="gExpr" placeholder="(x^3 - 9) / 4 or use Convert" />
           </div>
           <div class="full-width hidden" id="dfRow">
-            <label>f'(x) — derivative</label>
-            <input type="text" id="dfExpr" placeholder="3*x^2 - 4" />
+            <div class="convert-row">
+              <label>f'(x) — derivative</label>
+              <button type="button" id="calcDerivativeBtn" class="convert-btn">Calculate f'(x)</button>
+            </div>
+            <input type="text" id="dfExpr" placeholder="3*x^2 - 4 or use Calculate" />
           </div>
           <div id="xlRow">
             <label>xl (lower bound)</label>
@@ -116,6 +119,7 @@
             <input type="number" id="digitsInput" min="1" max="15" placeholder="0" />
           </div>
           <div class="full-width button-row">
+            <button id="polyLoadExampleBtn" type="button" class="convert-btn">Load Example</button>
             <button id="solveBtn" class="solve-btn">Solve</button>
           </div>
         </div>
@@ -131,7 +135,6 @@
             <option value="">Choose a method…</option>
             <option value="gauss">Gaussian Elimination</option>
             <option value="lu">The LU Factorization</option>
-            <option value="palu">The PA = LU Factorization</option>
             <option value="gaussjordan">Gauss - Jordan</option>
             <option value="cramer">Cramer's Rule</option>
           </select>
@@ -142,7 +145,8 @@
 
       <div id="linearInputSection" class="card hidden" style="margin-top: 1.5rem;">
         <div class="method-row" style="margin-bottom: 1.5rem;">
-          <span class="badge" id="linearActiveMethodBadge" style="font-size: 1rem; padding: 0.5rem 1rem;">Gaussian Elimination</span>
+          <span class="badge" id="linearActiveMethodBadge" style="font-size: 1rem; padding: 0.5rem 1rem;">Gaussian
+            Elimination</span>
         </div>
 
         <!-- Controls row -->
@@ -157,6 +161,13 @@
               <option value="6">6 × 6</option>
             </select>
           </div>
+          <div class="gauss-ctrl-group hidden" id="pivotingGroup">
+            <label for="pivotingSelect">Pivoting Option</label>
+            <select id="pivotingSelect" style="width:14rem;">
+              <option value="without">Without Partial Pivoting</option>
+              <option value="with">With Partial Pivoting</option>
+            </select>
+          </div>
           <div class="gauss-ctrl-group">
             <label for="gaussDigits">Decimal Digits</label>
             <input type="number" id="gaussDigits" min="0" max="10" value="4" style="width:6rem;" />
@@ -165,10 +176,10 @@
           <button id="gaussSolveBtn" class="solve-btn">Solve</button>
         </div>
 
-        <!-- Augmented matrix input -->
+        <!-- Equations input -->
         <div class="gauss-matrix-wrap">
-          <p class="gauss-matrix-hint">Enter the augmented matrix [A | b]</p>
-          <div id="gaussMatrixGrid" class="gauss-matrix-grid"></div>
+          <p class="gauss-matrix-hint">Enter your system of equations (e.g. 2x + 3y - z = 5)</p>
+          <div id="gaussEquationsList" class="gauss-equations-list"></div>
         </div>
 
         <!-- Error box -->
@@ -178,25 +189,72 @@
       <!-- Step-by-step output -->
       <div id="gaussOutputCard" class="card hidden">
         <h2 class="card-title">Solution Steps</h2>
-        <p id="gaussEnterHint" class="enter-hint hidden">
-          Press <kbd>Enter</kbd> to reveal the next step
-        </p>
+        <div class="step-controls">
+          <button id="gaussAllStepsBtn" class="solve-btn step-btn hidden">Show All Steps</button>
+          <button id="gaussLUBtn" class="solve-btn step-btn hidden"
+            style="background: linear-gradient(135deg, hsl(260, 75%, 60%), hsl(280, 80%, 55%));">Continue with
+            LU</button>
+        </div>
         <div id="gaussOutput" class="gauss-output"></div>
+        <div id="luOutput" class="gauss-output" style="margin-top: 1.5rem;"></div>
       </div>
     </div>
 
-    <!-- Chapter 3 Section -->
-    <div id="chapter3Section" class="section hidden">
+    <!-- Unconstrained Optimization Section -->
+    <div id="UnconstrainedSection" class="section hidden">
       <div class="card">
-        <h2 class="card-title">Chapter 3</h2>
-        <p>Content will be added later.</p>
+        <h2 class="card-title">Select Method</h2>
+        <div class="method-row">
+          <select id="unconMethodSelect">
+            <option value="">Choose a method…</option>
+            <option value="golden">Golden Section Method</option>
+          </select>
+          <span id="unconMethodBadge" class="badge hidden"></span>
+        </div>
+      </div>
+
+      <div id="unconInputSection" class="card hidden" style="margin-top: 1.5rem;">
+        <h2 class="card-title">Input Parameters</h2>
+        <div class="form-grid">
+          <div class="full-width">
+            <label>Optimization Type</label>
+            <select id="unconOptType" style="width: 100%;">
+              <option value="max">Maximize (Max)</option>
+              <option value="min">Minimize (Min)</option>
+            </select>
+          </div>
+          <div class="full-width">
+            <label>Function f(x)</label>
+            <input type="text" id="unconFuncExpr" placeholder="2 * sin(x) - (x^2 / 10)" />
+          </div>
+          <div>
+            <label>xl (lower bound)</label>
+            <input type="number" id="unconXlInput" placeholder="0" />
+          </div>
+          <div>
+            <label>xu (upper bound)</label>
+            <input type="number" id="unconXuInput" placeholder="4" />
+          </div>
+          <div>
+            <label>Max Iterations</label>
+            <input type="number" id="unconMaxIterInput" min="1" placeholder="e.g. 8" />
+          </div>
+          <div>
+            <label>Decimal Digits</label>
+            <input type="number" id="unconDigitsInput" min="1" max="15" placeholder="4" />
+          </div>
+          <div class="full-width button-row">
+            <button id="unconLoadExampleBtn" type="button" class="convert-btn">Load Example</button>
+            <button id="unconSolveBtn" class="solve-btn">Solve</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-    </div>
+  </div>
   </div>
   <div id="errorBox" class="error-box hidden" style="margin-top: 1rem;"></div>
-    </div>
+  </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/13.2.2/math.min.js"></script>
   <script src="script.js"></script>
