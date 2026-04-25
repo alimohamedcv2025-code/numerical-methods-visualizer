@@ -760,13 +760,11 @@ if (linearMethodSelect) {
     }
   });
 }
-
 // ═══════════════════════════════════════════
 // GAUSSIAN ELIMINATION — LINEAR SECTION
 // ═══════════════════════════════════════════
 (function () {
   const gaussSizeEl = document.getElementById('gaussSize');
-  const gaussDigitsEl = document.getElementById('gaussDigits');
   const gaussGridEl = document.getElementById('gaussEquationsList');
   const gaussSolveBtn = document.getElementById('gaussSolveBtn');
   const gaussExBtn = document.getElementById('gaussLoadExampleBtn');
@@ -774,11 +772,6 @@ if (linearMethodSelect) {
   const gaussOutputCard = document.getElementById('gaussOutputCard');
   const gaussOutputEl = document.getElementById('gaussOutput');
 
-  // ── subscript helpers ──────────────────────────────────────────
-  const SUB = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
-  function sub(n) { return String(n).split('').map(c => SUB[+c] ?? c).join(''); }
-
-  // ── Build n text inputs for equations ──────────────────────────────────
   function buildGrid(n) {
     gaussGridEl.innerHTML = '';
     for (let i = 0; i < n; i++) {
@@ -795,7 +788,6 @@ if (linearMethodSelect) {
     gaussSizeEl.addEventListener('change', function () { buildGrid(+gaussSizeEl.value); });
     buildGrid(+gaussSizeEl.value);
 
-    // ── Load textbook example (3×3) ───────────────────────────────
     gaussExBtn.addEventListener('click', function () {
       gaussSizeEl.value = '3';
       buildGrid(3);
@@ -812,7 +804,6 @@ if (linearMethodSelect) {
     });
   }
 
-  // ── Read matrix from equation inputs ───────────────────────────────────
   function readMatrix(n) {
     try {
       var equations = [];
@@ -870,11 +861,6 @@ if (linearMethodSelect) {
         row.push(bVal);
         A.push(row);
       }
-
-      // Update SUB globals for variables display? The script hardcodes x1, x2, x3.
-      // We will store varArray to gaussState so we can show x, y, z instead of x1, x2, x3!
-      gaussState.varArray = varArray.length > 0 ? varArray : null;
-
       return A;
     } catch (e) {
       gaussErrorEl.textContent = 'Error parsing equations. Use proper math syntax (e.g. 2x + 3y = 5).';
@@ -882,692 +868,341 @@ if (linearMethodSelect) {
     }
   }
 
-  // ── Pretty-print number ───────────────────────────────────────
-  function pn(v, d) {
-    var r = parseFloat(v.toFixed(d));
-    return Object.is(r, -0) ? '0' : String(r);
-  }
+  // ─── Literal JS Translations of C++ Code ──────────────────────────
 
-  // ── Build augmented-matrix HTML table ─────────────────────────
-  function matrixHTML(M, n, d) {
-    var html = '<div class="gauss-mat-wrap"><table class="gauss-mat">';
-    for (var i = 0; i < n; i++) {
-      html += '<tr>';
-      html += '<td class="mat-brk-l">[</td>';
-      for (var j = 0; j < n; j++) {
-        html += '<td class="mat-cell">' + pn(M[i][j], d) + '</td>';
-      }
-      html += '<td class="mat-pipe"> | </td>';
-      html += '<td class="mat-cell mat-b">' + pn(M[i][n], d) + '</td>';
-      html += '<td class="mat-brk-r">]</td>';
-      html += '</tr>';
-    }
-    html += '</table></div>';
-    return html;
-  }
-
-  function squareMatrixHTML(M, n, d) {
-    var html = '<div class="gauss-mat-wrap"><table class="gauss-mat">';
-    for (var i = 0; i < n; i++) {
-      html += '<tr>';
-      html += '<td class="mat-brk-l">[</td>';
-      for (var j = 0; j < n; j++) {
-        html += '<td class="mat-cell">' + pn(M[i][j], d) + '</td>';
-      }
-      html += '<td class="mat-brk-r">]</td>';
-      html += '</tr>';
-    }
-    html += '</table></div>';
-    return html;
-  }
-
-  // ── Gaussian Elimination with step recording ───────────────────
-  function gaussEliminate(M0, n, d) {
-    var M = M0.map(function (r) { return r.slice(); });
-    var steps = [];
-
-    var L = [];
-    for (var i = 0; i < n; i++) {
-      var row = new Array(n).fill(0);
-      row[i] = 1;
-      L.push(row);
-    }
-
-    function push(type, payload) { steps.push({ type: type, payload: payload }); }
-
-    push('header', 'Initial Augmented Matrix');
-    push('matrix', M.map(function (r) { return r.slice(); }));
-    push('header', 'Forward Elimination');
-
-    for (var j = 0; j < n - 1; j++) {
-      push('pivot-col', j);
-      for (var i = j + 1; i < n; i++) {
-        if (Math.abs(M[i][j]) < 1e-14) {
-          L[i][j] = 0;
-          continue;
-        }
-
-        var pivot = M[j][j];
-        var entry = M[i][j];
-        var mij = entry / pivot;
-
-        L[i][j] = mij;
-
-        push('multiplier', {
-          label: 'm' + sub(i + 1) + sub(j + 1),
-          top: 'a' + sub(i + 1) + sub(j + 1),
-          bot: 'a' + sub(j + 1) + sub(j + 1),
-          topVal: pn(entry, d),
-          botVal: pn(pivot, d),
-          mVal: pn(mij, d)
-        });
-
-        push('row-op', { i: i + 1, j: j + 1, m: pn(mij, d) });
-
-        for (var k = j; k <= n; k++) {
-          M[i][k] = M[i][k] - mij * M[j][k];
-          if (Math.abs(M[i][k]) < 1e-10) M[i][k] = 0;
-        }
-
-        push('matrix', M.map(function (r) { return r.slice(); }));
-      }
-    }
-
-    push('header', 'Upper Triangular Matrix');
-    push('matrix', M.map(function (r) { return r.slice(); }));
-    push('header', 'Back Substitution');
-
-    var x = new Array(n).fill(0);
-    for (var ii = n - 1; ii >= 0; ii--) {
-      var sum = M[ii][n];
-      var terms = [];
-      for (var kk = ii + 1; kk < n; kk++) {
-        sum -= M[ii][kk] * x[kk];
-        terms.push({ coef: pn(M[ii][kk], d), xk: kk + 1, val: pn(x[kk], d) });
-      }
-      x[ii] = sum / M[ii][ii];
-      push('back-sub', {
-        xi: ii + 1,
-        bVal: pn(M[ii][n], d),
-        a_ii: pn(M[ii][ii], d),
-        terms: terms,
-        result: pn(x[ii], d)
-      });
-    }
-
-    var U = M.map(function (r) { return r.slice(0, n); });
-    var origB = M0.map(function (r) { return r[n]; });
-
-    push('solution', x.map(function (v, idx) { return { xi: idx + 1, val: pn(v, d) }; }));
-    return { steps: steps, solution: x, L: L, U: U, origB: origB };
-  }
-
-  // ── Gauss-Jordan Elimination with step recording ───────────────────
-  function gaussJordanEliminate(M0, n, d, usePivoting) {
-    var M = M0.map(function (r) { return r.slice(); });
-    var steps = [];
-
-    function push(type, payload) { steps.push({ type: type, payload: payload }); }
-
-    push('header', 'Initial Augmented Matrix');
-    push('matrix', M.map(function (r) { return r.slice(); }));
-
-    for (var j = 0; j < n; j++) {
-      push('header', 'Column ' + (j + 1) + ' Elimination');
-      push('pivot-col', j);
-
-      if (usePivoting) {
-        var maxRow = j;
-        var maxVal = Math.abs(M[j][j]);
-        for (var i = j + 1; i < n; i++) {
-          if (Math.abs(M[i][j]) > maxVal) {
-            maxVal = Math.abs(M[i][j]);
-            maxRow = i;
-          }
-        }
-        if (maxRow !== j) {
-          push('header', 'Partial Pivoting: Swapped Row ' + (j + 1) + ' and Row ' + (maxRow + 1));
-          var temp = M[j];
-          M[j] = M[maxRow];
-          M[maxRow] = temp;
-          push('matrix', M.map(function (r) { return r.slice(); }));
-        }
-      }
-
-      var pivot = M[j][j];
-      if (Math.abs(pivot) < 1e-14) {
-        push('header', 'Error: Pivot is 0. Cannot proceed.');
-        break;
-      }
-
-      // Make pivot 1
-      if (Math.abs(pivot - 1.0) > 1e-14) {
-        var multiplier = 1.0 / pivot;
-        for (var k = j; k <= n; k++) {
-          M[j][k] = M[j][k] * multiplier;
-          if (Math.abs(M[j][k]) < 1e-10) M[j][k] = 0;
-        }
-        push('row-op', { i: j + 1, j: j + 1, m: '(' + pn(pivot, d) + ')', isDiv: true });
-        push('matrix', M.map(function (r) { return r.slice(); }));
-      }
-
-      // Eliminate all other entries in column j
-      var eliminatedAny = false;
-      for (var i = 0; i < n; i++) {
-        if (i !== j) {
-          var factor = M[i][j];
-          if (Math.abs(factor) > 1e-14) {
-            eliminatedAny = true;
-            for (var k = j; k <= n; k++) {
-              M[i][k] = M[i][k] - factor * M[j][k];
-              if (Math.abs(M[i][k]) < 1e-10) M[i][k] = 0;
-            }
-            push('row-op', { i: i + 1, j: j + 1, m: pn(factor, d) });
-          }
-        }
-      }
-      if (eliminatedAny) {
-        push('matrix', M.map(function (r) { return r.slice(); }));
-      }
-    }
-
-    push('header', 'Final Reduced Row Echelon Form (Identity Matrix)');
-    var x = new Array(n).fill(0);
-    for (var i = 0; i < n; i++) {
-      x[i] = M[i][n];
-    }
-
-    push('solution', x.map(function (v, idx) { return { xi: idx + 1, val: pn(v, d) }; }));
-    return { steps: steps, solution: x };
-  }
-
-  // ── Cramer's Rule with step recording ─────────────────────────────
-  function cramerSolve(M0, n, d) {
-    var M = M0.map(function (r) { return r.slice(); });
-    var steps = [];
-    var x = new Array(n).fill(0);
-
-    function push(type, payload) { steps.push({ type: type, payload: payload }); }
-
-    push('header', 'Initial Augmented Matrix');
-    push('matrix', M.map(function (r) { return r.slice(); }));
-
-    // Extract A and b
-    var A = M.map(function (r) { return r.slice(0, n); });
-    var b = M.map(function (r) { return r[n]; });
-
-    var D = math.det(A);
-    push('cramer-det', { label: 'D (Main Determinant)', mat: A.map(function (r) { return r.slice(); }), det: pn(D, d) });
-
-    if (Math.abs(D) < 1e-14) {
-      push('header', '<span style="color:red">Error: Main Determinant D is 0. The system has no unique solution.</span>');
-      return { steps: steps, solution: null, error: true };
-    }
-
-    push('header', 'Calculating Variable Determinants');
-
-    for (var i = 0; i < n; i++) {
-      var Ai = A.map(function (r) { return r.slice(); });
-      for (var r = 0; r < n; r++) {
-        Ai[r][i] = b[r];
-      }
-      var Di = math.det(Ai);
-      x[i] = Di / D;
-
-      push('cramer-sub', {
-        label: 'D' + (i + 1),
-        varName: getVarName(i + 1),
-        mat: Ai.map(function (r) { return r.slice(); }),
-        det: pn(Di, d),
-        xi: pn(x[i], d),
-        D: pn(D, d)
-      });
-    }
-
-    push('solution', x.map(function (v, idx) { return { xi: idx + 1, val: pn(v, d) }; }));
-    return { steps: steps, solution: x, error: false };
-  }
-
-  // ── Render steps to HTML ──────────────────────────────────────
-  function renderSteps(steps, n, d) {
-    var html = '';
-    for (var s = 0; s < steps.length; s++) {
-      var st = steps[s];
-      switch (st.type) {
-        case 'header':
-          html += '<div class="gs-header">' + st.payload + '</div>';
-          break;
-
-        case 'pivot-col':
-          var jj = st.payload;
-          html += '<div class="gs-pivot">Pivot column: <strong>j = ' + (jj + 1) + '</strong>' +
-            '&nbsp;&nbsp;(pivot element = a' + sub(jj + 1) + sub(jj + 1) + ')</div>';
-          break;
-
-        case 'multiplier':
-          var p = st.payload;
-          html += '<div class="gs-line gs-multiplier">' +
-            '<span class="gs-lbl">' + p.label + '</span>' +
-            '<span class="gs-eq">= ' + p.top + ' / ' + p.bot +
-            ' = ' + p.topVal + ' / ' + p.botVal +
-            ' = <strong>' + p.mVal + '</strong></span>' +
-            '</div>';
-          break;
-
-        case 'row-op':
-          var ro = st.payload;
-          html += '<div class="gs-line gs-rowop">' +
-            'E' + sub(ro.i) + ' &minus; (<strong>' + ro.m + '</strong>) &middot; E' + sub(ro.j) +
-            ' &rarr; E' + sub(ro.i) +
-            '</div>';
-          break;
-
-        case 'matrix':
-          html += matrixHTML(st.payload, n, d);
-          break;
-
-        case 'back-sub':
-          var bs = st.payload;
-          // Formula line
-          var formula = 'x' + sub(bs.xi) + ' = (' + bs.bVal;
-          for (var t = 0; t < bs.terms.length; t++) {
-            formula += ' &minus; (' + bs.terms[t].coef + ')&middot;x' + sub(bs.terms[t].xk);
-          }
-          formula += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
-          // Substituted values line
-          var subst = 'x' + sub(bs.xi) + ' = (' + bs.bVal;
-          for (var t2 = 0; t2 < bs.terms.length; t2++) {
-            subst += ' &minus; (' + bs.terms[t2].coef + ')&middot;(' + bs.terms[t2].val + ')';
-          }
-          subst += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
-
-          html += '<div class="gs-line gs-backsub">' +
-            '<div>' + formula + '</div>' +
-            (bs.terms.length > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
-            '</div>';
-          break;
-
-        case 'solution':
-          html += '<div class="gs-header">Final Solution</div>';
-          html += '<div class="gs-solution">';
-          for (var sv = 0; sv < st.payload.length; sv++) {
-            html += '<div class="gs-sol-row">x' + sub(st.payload[sv].xi) +
-              ' = <span>' + st.payload[sv].val + '</span></div>';
-          }
-          html += '</div>';
-          break;
-      }
-    }
-    return html;
-  }
-
-  // ── Step-by-step state ────────────────────────────────────────
-  var gaussState = {
-    steps: [],
-    visible: 0,
-    n: 3,
-    d: 4,
-    finished: false,
-    active: false,
-    varArray: null
-  };
-
-  function getVarName(index) {
-    if (gaussState.varArray && gaussState.varArray.length > 0) {
-      if (index - 1 < gaussState.varArray.length) {
-        return gaussState.varArray[index - 1];
-      }
-    }
-    return 'x' + sub(index);
-  }
-
-  // Renders one step block and appends it to the output container
-  function renderOneStep(st) {
-    var n = gaussState.n, d = gaussState.d;
-    var html = '';
-    switch (st.type) {
-      case 'header':
-        html = '<div class="gs-header">' + st.payload + '</div>';
-        break;
-      case 'pivot-col':
-        var jj = st.payload;
-        html = '<div class="gs-pivot">Pivot column: <strong>j = ' + (jj + 1) + '</strong>' +
-          '&nbsp;&nbsp;(pivot element = a' + sub(jj + 1) + sub(jj + 1) + ')</div>';
-        break;
-      case 'multiplier':
-        var p = st.payload;
-        html = '<div class="gs-line gs-multiplier">' +
-          '<span class="gs-lbl">' + p.label + '</span>' +
-          '<span class="gs-eq">= ' + p.top + ' / ' + p.bot +
-          ' = ' + p.topVal + ' / ' + p.botVal +
-          ' = <strong>' + p.mVal + '</strong></span>' +
-          '</div>';
-        break;
-      case 'row-op':
-        var ro = st.payload;
-        html = '<div class="gs-line gs-rowop">' +
-          'E' + sub(ro.i) + ' &minus; (<strong>' + ro.m + '</strong>) &middot; E' + sub(ro.j) +
-          ' &rarr; E' + sub(ro.i) +
-          '</div>';
-        break;
-      case 'matrix':
-        html = matrixHTML(st.payload, n, d);
-        break;
-      case 'back-sub':
-        var bs = st.payload;
-        var formula = getVarName(bs.xi) + ' = (' + bs.bVal;
-        for (var t = 0; t < bs.terms.length; t++) {
-          formula += ' &minus; (' + bs.terms[t].coef + ')&middot;' + getVarName(bs.terms[t].xk);
-        }
-        formula += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
-        var subst = getVarName(bs.xi) + ' = (' + bs.bVal;
-        for (var t2 = 0; t2 < bs.terms.length; t2++) {
-          subst += ' &minus; (' + bs.terms[t2].coef + ')&middot;(' + bs.terms[t2].val + ')';
-        }
-        subst += ') / ' + bs.a_ii + ' = <strong>' + bs.result + '</strong>';
-        html = '<div class="gs-line gs-backsub">' +
-          '<div>' + formula + '</div>' +
-          (bs.terms.length > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
-          '</div>';
-        break;
-      case 'cramer-det':
-        var cd = st.payload;
-        html = '<div class="gs-header">' + cd.label + ' = <strong>' + cd.det + '</strong></div>' +
-          squareMatrixHTML(cd.mat, n, d);
-        break;
-      case 'cramer-sub':
-        var cs = st.payload;
-        html = '<div class="gs-line" style="margin-bottom: 1.5rem;">' +
-          '<div class="gs-header">' + cs.label + ' = <strong>' + cs.det + '</strong></div>' +
-          squareMatrixHTML(cs.mat, n, d) +
-          '<div class="gs-backsub" style="margin-top: 0.5rem; background: rgba(0,0,0,0.1); padding: 0.5rem; border-radius: 4px;">' +
-          cs.varName + ' = ' + cs.label + ' / D = ' + cs.det + ' / ' + cs.D + ' = <strong>' + cs.xi + '</strong>' +
-          '</div>' +
-          '</div>';
-        break;
-      case 'solution':
-        html = '<div><div class="gs-header">Final Solution</div>' +
-          '<div class="gs-solution">';
-        for (var sv = 0; sv < st.payload.length; sv++) {
-          html += '<div class="gs-sol-row">' + getVarName(st.payload[sv].xi) +
-            ' = <span>' + st.payload[sv].val + '</span></div>';
-        }
-        html += '</div></div>';
-        break;
-    }
+  function cout(html) {
     var el = document.createElement('div');
     el.innerHTML = html;
     gaussOutputEl.appendChild(el.firstElementChild || el);
   }
 
-  function gaussShowNext() {
-    if (gaussState.finished || !gaussState.active) return;
-    if (gaussState.visible < gaussState.steps.length) {
-      renderOneStep(gaussState.steps[gaussState.visible]);
-      gaussState.visible++;
-      // Scroll the new step into view
-      gaussOutputEl.lastElementChild &&
-        gaussOutputEl.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-    if (gaussState.visible >= gaussState.steps.length) {
-      gaussState.finished = true;
+  function coutText(text) {
+    var el = document.createElement('div');
+    el.className = 'gs-header';
+    el.textContent = text;
+    gaussOutputEl.appendChild(el);
+  }
+
+  function endl() {
+    var el = document.createElement('div');
+    el.style.height = '10px';
+    gaussOutputEl.appendChild(el);
+  }
+
+  function CopyMatrix(_x, _y, rows, cols) {
+    for (var i = 0; i < rows; i++) {
+      if (!_y[i]) _y[i] = [];
+      for (var j = 0; j < cols; j++) {
+        _y[i][j] = _x[i][j];
+      }
     }
   }
 
-  // ── Solve button click ────────────────────────────────────────
+  function DisplayMatrix(_a, rows, cols) {
+    var html = '<div class="gauss-mat-wrap"><table class="gauss-mat">';
+    for (var i = 0; i < rows; i++) {
+      html += '<tr>';
+      html += '<td class="mat-brk-l">[</td>';
+      for (var j = 0; j < cols; j++) {
+        if (j === cols - 1 && cols > rows) {
+          html += '<td class="mat-pipe"> | </td>';
+        }
+        var val = parseFloat(_a[i][j].toFixed(4));
+        html += '<td class="mat-cell">' + (Object.is(val, -0) ? 0 : val) + '</td>';
+      }
+      html += '<td class="mat-brk-r">]</td>';
+      html += '</tr>';
+    }
+    html += '</table></div>';
+    cout(html);
+    endl();
+  }
+
+  function GJE(_a, n, ref) {
+    coutText("Initial Augmented Matrix");
+    DisplayMatrix(_a, n, n + 1);
+
+    for (var j = 0; j < n - 1; j++) {
+      for (var i = j + 1; i < n; i++) {
+        var m = _a[i][j] / _a[j][j];
+        ref['m' + (i + 1) + (j + 1)] = m;
+        coutText("m" + (i + 1) + (j + 1) + " = a" + (i + 1) + (j + 1) + " / a" + (j + 1) + (j + 1) + " = " + parseFloat(_a[i][j].toFixed(4)) + " / " + parseFloat(_a[j][j].toFixed(4)) + " = " + parseFloat(m.toFixed(4)));
+        endl();
+
+        coutText("R" + (i + 1) + " -> R" + (i + 1) + " - (" + parseFloat(m.toFixed(4)) + ") * R" + (j + 1));
+        for (var k = 0; k < n + 1; k++) {
+          var e_i = _a[i][k];
+          var e_j = m * _a[j][k];
+          _a[i][k] = e_i - e_j;
+        }
+        DisplayMatrix(_a, n, n + 1);
+      }
+    }
+
+    coutText("Backward Substitution:");
+    var x = new Array(n).fill(0);
+    for (var i = n - 1; i >= 0; i--) {
+      var sum = _a[i][n];
+      var eqStr = parseFloat(_a[i][n].toFixed(4));
+      for (var k = i + 1; k < n; k++) {
+        sum -= _a[i][k] * x[k];
+        eqStr += " - (" + parseFloat(_a[i][k].toFixed(4)) + " * " + parseFloat(x[k].toFixed(4)) + ")";
+      }
+      x[i] = sum / _a[i][i];
+      var fullEq = "X" + (i + 1) + " = (a" + (i + 1) + (n + 1) + " - \u03A3(a" + (i + 1) + "k * Xk)) / a" + (i + 1) + (i + 1);
+      coutText(fullEq + " = (" + eqStr + ") / " + parseFloat(_a[i][i].toFixed(4)) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+
+    endl();
+    coutText("Gauss Result");
+    for (var i = 0; i < n; i++) {
+      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+    endl();
+    
+    return x;
+  }
+
+  function LUDecomposition(_a, n) {
+    var _u = [];
+    var _l = [];
+    var _b = [];
+    var ref = {};
+
+    for (var i = 0; i < n; i++) {
+      _b[i] = _a[i][n];
+      _u[i] = new Array(n).fill(0);
+      _l[i] = new Array(n).fill(0);
+    }
+
+    GJE(_a, n, ref);
+
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        _u[i][j] = _a[i][j];
+      }
+    }
+
+    endl();
+    coutText("U matrix (from GJE)");
+    DisplayMatrix(_u, n, n);
+
+    for (var i = 0; i < n; i++) {
+      _l[i][i] = 1;
+      for (var j = 0; j < i; j++) {
+        _l[i][j] = ref['m' + (i + 1) + (j + 1)] || 0;
+      }
+    }
+
+    coutText("L matrix (from multipliers)");
+    DisplayMatrix(_l, n, n);
+
+    coutText("Solve Lc = b (Forward Substitution)");
+    var c = new Array(n).fill(0);
+    for (var i = 0; i < n; i++) {
+      var sum = _b[i];
+      var eqStr = parseFloat(_b[i].toFixed(4));
+      for (var j = 0; j < i; j++) {
+        sum -= _l[i][j] * c[j];
+        eqStr += " - (" + parseFloat(_l[i][j].toFixed(4)) + " * " + parseFloat(c[j].toFixed(4)) + ")";
+      }
+      c[i] = sum / _l[i][i];
+      coutText("C" + (i + 1) + " = (" + eqStr + ") / " + parseFloat(_l[i][i].toFixed(4)) + " = " + parseFloat(c[i].toFixed(4)));
+    }
+    endl();
+
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        _a[i][j] = _u[i][j];
+      }
+      _a[i][n] = c[i];
+    }
+
+    coutText("Solve Ux = c (Backward Substitution)");
+    var x = new Array(n).fill(0);
+    for (var i = n - 1; i >= 0; i--) {
+      var sum = _a[i][n];
+      var eqStr = parseFloat(_a[i][n].toFixed(4));
+      for (var k = i + 1; k < n; k++) {
+        sum -= _a[i][k] * x[k];
+        eqStr += " - (" + parseFloat(_a[i][k].toFixed(4)) + " * " + parseFloat(x[k].toFixed(4)) + ")";
+      }
+      x[i] = sum / _a[i][i];
+      coutText("X" + (i + 1) + " = (" + eqStr + ") / " + parseFloat(_a[i][i].toFixed(4)) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+    endl();
+
+    coutText("LU decomposition Final Result");
+    for (var i = 0; i < n; i++) {
+      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+    endl();
+  }
+
+  function CramersRule(_a, n) {
+    coutText("Initial Augmented Matrix");
+    DisplayMatrix(_a, n, n + 1);
+
+    var A = [];
+    var b = [];
+    for (var i = 0; i < n; i++) {
+      A[i] = _a[i].slice(0, n);
+      b[i] = _a[i][n];
+    }
+
+    var detA = math.det(A);
+    coutText("Calculate Main Determinant (D):");
+    coutText("D = " + parseFloat(detA.toFixed(4)));
+    endl();
+
+    if (Math.abs(detA) < 1e-14) {
+      coutText("Error: Main determinant is zero. Cramer's Rule cannot be used.");
+      return;
+    }
+
+    var _detA = new Array(n).fill(0);
+
+    for (var i = 0; i < n; i++) {
+      var Ai = A.map(function(row) { return row.slice(); });
+      for (var r = 0; r < n; r++) {
+        Ai[r][i] = b[r];
+      }
+      _detA[i] = math.det(Ai);
+      
+      coutText("Substitute Column " + (i + 1) + " with b to find D" + (i + 1) + ":");
+      DisplayMatrix(Ai, n, n);
+      coutText("D" + (i + 1) + " = " + parseFloat(_detA[i].toFixed(4)));
+      endl();
+    }
+
+    endl();
+    coutText("Calculate Variables (Xi = Di / D):");
+    for (var i = 0; i < n; i++) {
+      coutText("X" + (i + 1) + " = D" + (i + 1) + " / D = " + parseFloat(_detA[i].toFixed(4)) + " / " + parseFloat(detA.toFixed(4)) + " = " + parseFloat((_detA[i] / detA).toFixed(4)));
+    }
+    endl();
+  }
+
+  function GaussJordanElimination(_a, n, usePivoting) {
+    coutText("Initial Augmented Matrix");
+    DisplayMatrix(_a, n, n + 1);
+
+    for (var j = 0; j < n; j++) {
+      if (usePivoting) {
+        var max_row = j;
+        var max_val = Math.abs(_a[j][j]);
+        for (var i = j + 1; i < n; i++) {
+          if (Math.abs(_a[i][j]) > max_val) {
+            max_val = Math.abs(_a[i][j]);
+            max_row = i;
+          }
+        }
+        if (max_row !== j) {
+          coutText("Partial Pivoting: Swap Row " + (j + 1) + " and Row " + (max_row + 1));
+          for (var k = 0; k < n + 1; k++) {
+            var temp = _a[j][k];
+            _a[j][k] = _a[max_row][k];
+            _a[max_row][k] = temp;
+          }
+          DisplayMatrix(_a, n, n + 1);
+        }
+      }
+
+      var pivot = _a[j][j];
+      if (Math.abs(pivot) < 1e-14) {
+        coutText("Error: Pivot is 0, cannot proceed.");
+        return;
+      }
+
+      if (Math.abs(pivot - 1.0) > 1e-14) {
+        coutText("Normalize pivot: R" + (j + 1) + " -> R" + (j + 1) + " / " + parseFloat(pivot.toFixed(4)));
+        for (var k = 0; k < n + 1; k++) {
+          _a[j][k] = _a[j][k] / pivot;
+        }
+        DisplayMatrix(_a, n, n + 1);
+      }
+
+      var eliminatedAny = false;
+      for (var i = 0; i < n; i++) {
+        if (i !== j) {
+          var factor = _a[i][j];
+          if (Math.abs(factor) > 1e-14) {
+            eliminatedAny = true;
+            coutText("Eliminate: R" + (i + 1) + " -> R" + (i + 1) + " - (" + parseFloat(factor.toFixed(4)) + ") * R" + (j + 1));
+            for (var k = 0; k < n + 1; k++) {
+              _a[i][k] = _a[i][k] - factor * _a[j][k];
+            }
+          }
+        }
+      }
+      if (eliminatedAny) {
+        DisplayMatrix(_a, n, n + 1);
+        endl();
+      }
+    }
+
+    var x = [];
+    for (var i = 0; i < n; i++) {
+      x.push(_a[i][n]);
+    }
+
+    coutText("Extract Result directly from constants column (since diagonal is 1):");
+    for (var i = 0; i < n; i++) {
+      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+    
+    endl();
+    coutText("Gauss Jordan Result");
+    for (var i = 0; i < n; i++) {
+      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+    }
+    endl();
+  }
+
+  // ─── Main Program Linkage ──────────────────────────────────────────
+
   gaussSolveBtn.addEventListener('click', function () {
     gaussErrorEl.classList.add('hidden');
     gaussOutputCard.classList.add('hidden');
     gaussOutputEl.innerHTML = '';
 
     var n = +gaussSizeEl.value;
-    var d = parseInt(gaussDigitsEl.value);
-    if (isNaN(d) || d < 0) d = 4;
-
     var M = readMatrix(n);
-    if (!M) {
-      gaussErrorEl.textContent = 'Please fill in all equations properly.';
-      gaussErrorEl.classList.remove('hidden');
-      return;
-    }
+    if (!M) return;
 
-    const m = document.getElementById('linearMethodSelect').value || 'gauss';
-
-    // Check for zero pivot (only for Gauss-based methods)
-    const usePivoting = document.getElementById("pivotingSelect").value === "with";
-
-    if (m !== 'cramer' && !(m === 'gaussjordan' && usePivoting)) {
-      var tempM = M.map(function (r) { return r.slice(); });
-      for (var j = 0; j < n; j++) {
-        if (Math.abs(tempM[j][j]) < 1e-14) {
-          gaussErrorEl.textContent =
-            'Pivot a' + (j + 1) + (j + 1) + ' = 0. The matrix may be singular or requires partial pivoting.';
-          gaussErrorEl.classList.remove('hidden');
-          return;
-        }
-      }
-    }
-
-    if (m === 'cramer') {
-      var result = cramerSolve(M, n, d);
-      gaussState.steps = result.steps;
-      gaussState.visible = 0;
-      gaussState.n = n;
-      gaussState.d = d;
-      gaussState.finished = false;
-      gaussState.active = true;
-
-      gaussOutputCard.classList.remove('hidden');
-      document.getElementById('gaussLUBtn').classList.add('hidden');
-      document.getElementById('luOutput').innerHTML = '';
-      gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      if (result.error) {
-        document.getElementById('gaussAllStepsBtn').classList.add('hidden');
-        renderOneStep(gaussState.steps[gaussState.steps.length - 1]); // Show error step
-      } else {
-        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
-        renderOneStep(gaussState.steps[gaussState.steps.length - 1]); // Show final solution
-      }
-
-    } else if (m === 'gaussjordan') {
-      var result = gaussJordanEliminate(M, n, d, usePivoting);
-      gaussState.steps = result.steps;
-      gaussState.visible = 0;
-      gaussState.n = n;
-      gaussState.d = d;
-      gaussState.finished = false;
-      gaussState.active = true;
-
-      gaussOutputCard.classList.remove('hidden');
-      document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
-      document.getElementById('gaussLUBtn').classList.add('hidden');
-      document.getElementById('luOutput').innerHTML = '';
-      gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
-
-    } else {
-      var result = gaussEliminate(M, n, d);
-      gaussState.steps = result.steps;
-      gaussState.visible = 0;
-      gaussState.n = n;
-      gaussState.d = d;
-      gaussState.finished = false;
-      gaussState.active = true;
-      gaussState.L = result.L;
-      gaussState.U = result.U;
-      gaussState.origB = result.origB;
-
-      gaussOutputCard.classList.remove('hidden');
-
-      if (m === 'lu') {
-        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
-        document.getElementById('gaussLUBtn').classList.add('hidden');
-        document.getElementById('luOutput').innerHTML = ''; // clear previous LU output
-        gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
-      } else { // gauss
-        document.getElementById('gaussAllStepsBtn').classList.remove('hidden');
-        document.getElementById('gaussLUBtn').classList.remove('hidden');
-        document.getElementById('luOutput').innerHTML = ''; // clear previous LU output
-        gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        renderOneStep(gaussState.steps[gaussState.steps.length - 1]);
-      }
-    }
-  });
-
-  // ── Button clicks advance steps ───────────────────────────────
-  document.getElementById('gaussAllStepsBtn').addEventListener('click', function () {
-    if (gaussState.active && !gaussState.finished) {
-      gaussOutputEl.innerHTML = '';
-      const m = document.getElementById('linearMethodSelect').value || 'gauss';
-      if (m === 'lu') {
-        renderLUOutput();
-      } else {
-        for (var i = 0; i < gaussState.steps.length; i++) {
-          renderOneStep(gaussState.steps[i]);
-        }
-      }
-      gaussState.finished = true;
-      this.classList.add('hidden');
-    }
-  });
-
-  function renderLUOutput() {
-    var luOutput = document.getElementById('luOutput');
-    luOutput.innerHTML = '';
-
-    var n = gaussState.n;
-    var d = gaussState.d;
-    var L = gaussState.L;
-    var U = gaussState.U;
-    var b = gaussState.origB;
-
-    function addHeader(title) {
-      var el = document.createElement('div');
-      el.className = 'gs-header';
-      el.textContent = title;
-      luOutput.appendChild(el);
-    }
-
-    function addMatrix(M_in, isAugmented) {
-      var html = '<div class="gauss-mat-wrap"><table class="gauss-mat">';
-      for (var i = 0; i < n; i++) {
-        html += '<tr><td class="mat-brk-l">[</td>';
-        for (var j = 0; j < n; j++) {
-          html += '<td class="mat-cell">' + pn(M_in[i][j], d) + '</td>';
-        }
-        if (isAugmented) {
-          html += '<td class="mat-pipe"> | </td>';
-          html += '<td class="mat-cell mat-b">' + pn(M_in[i][n], d) + '</td>';
-        }
-        html += '<td class="mat-brk-r">]</td></tr>';
-      }
-      html += '</table></div>';
-      var el = document.createElement('div');
-      el.innerHTML = html;
-      luOutput.appendChild(el.firstElementChild || el);
-    }
-
-    addHeader('L Matrix (from Multipliers)');
-    addMatrix(L, false);
-
-    addHeader('U Matrix (from Forward Elimination)');
-    addMatrix(U, false);
-
-    addHeader('Step 1: Solve Ly = b (Forward Substitution)');
-    var Laug = [];
+    var _a = [];
     for (var i = 0; i < n; i++) {
-      var r = L[i].slice();
-      r.push(b[i]);
-      Laug.push(r);
-    }
-    addMatrix(Laug, true);
-
-    var y = new Array(n).fill(0);
-    for (var ii = 0; ii < n; ii++) {
-      var sum = b[ii];
-      var formula = 'y' + sub(ii + 1) + ' = (' + pn(b[ii], d);
-      var subst = 'y' + sub(ii + 1) + ' = (' + pn(b[ii], d);
-      var terms = 0;
-      for (var kk = 0; kk < ii; kk++) {
-        sum -= L[ii][kk] * y[kk];
-        formula += ' &minus; (' + pn(L[ii][kk], d) + ')&middot;y' + sub(kk + 1);
-        subst += ' &minus; (' + pn(L[ii][kk], d) + ')&middot;(' + pn(y[kk], d) + ')';
-        terms++;
+      _a[i] = [];
+      for (var j = 0; j < n + 1; j++) {
+        _a[i][j] = M[i][j];
       }
-      y[ii] = sum / L[ii][ii];
-      formula += ') / ' + pn(L[ii][ii], d) + ' = <strong>' + pn(y[ii], d) + '</strong>';
-      subst += ') / ' + pn(L[ii][ii], d) + ' = <strong>' + pn(y[ii], d) + '</strong>';
-
-      var html = '<div class="gs-line gs-backsub">' +
-        '<div>' + formula + '</div>' +
-        (terms > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
-        '</div>';
-      var el = document.createElement('div');
-      el.innerHTML = html;
-      luOutput.appendChild(el.firstElementChild || el);
     }
 
-    addHeader('Step 2: Solve Ux = y (Backward Substitution)');
-    var Uaug = [];
-    for (var i = 0; i < n; i++) {
-      var r = U[i].slice();
-      r.push(y[i]);
-      Uaug.push(r);
-    }
-    addMatrix(Uaug, true);
-
-    var x = new Array(n).fill(0);
-    for (var ii = n - 1; ii >= 0; ii--) {
-      var sum = y[ii];
-      var formula = getVarName(ii + 1) + ' = (' + pn(y[ii], d);
-      var subst = getVarName(ii + 1) + ' = (' + pn(y[ii], d);
-      var terms = 0;
-      for (var kk = ii + 1; kk < n; kk++) {
-        sum -= U[ii][kk] * x[kk];
-        formula += ' &minus; (' + pn(U[ii][kk], d) + ')&middot;' + getVarName(kk + 1);
-        subst += ' &minus; (' + pn(U[ii][kk], d) + ')&middot;(' + pn(x[kk], d) + ')';
-        terms++;
-      }
-      x[ii] = sum / U[ii][ii];
-      formula += ') / ' + pn(U[ii][ii], d) + ' = <strong>' + pn(x[ii], d) + '</strong>';
-      subst += ') / ' + pn(U[ii][ii], d) + ' = <strong>' + pn(x[ii], d) + '</strong>';
-
-      var html = '<div class="gs-line gs-backsub">' +
-        '<div>' + formula + '</div>' +
-        (terms > 0 ? '<div class="gs-sub-detail">' + subst + '</div>' : '') +
-        '</div>';
-      var el = document.createElement('div');
-      el.innerHTML = html;
-      luOutput.appendChild(el.firstElementChild || el);
+    const m = document.getElementById('linearMethodSelect').value || 'gaussjordan';
+    const pivotingSelect = document.getElementById('pivotingSelect');
+    const usePivoting = pivotingSelect ? pivotingSelect.value === 'with' : false;
+    
+    if (m === 'gaussjordan') {
+      GaussJordanElimination(_a, n, usePivoting);
+    } else if (m === 'gauss') {
+      var ref = {};
+      GJE(_a, n, ref);
+    } else if (m === 'lu') {
+      LUDecomposition(_a, n);
+    } else if (m === 'cramer') {
+      CramersRule(_a, n);
     }
 
-    addHeader('Final Solution (from LU)');
-    var solHtml = '<div class="gs-solution">';
-    for (var sv = 0; sv < n; sv++) {
-      solHtml += '<div class="gs-sol-row">' + getVarName(sv + 1) +
-        ' = <span>' + pn(x[sv], d) + '</span></div>';
-    }
-    solHtml += '</div>';
-    var solEl = document.createElement('div');
-    solEl.innerHTML = solHtml;
-    luOutput.appendChild(solEl.firstElementChild || solEl);
-
-    luOutput.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  document.getElementById('gaussLUBtn').addEventListener('click', function () {
-    if (!gaussState.active) return;
-
-    // Automatically finish Gauss steps
-    if (!gaussState.finished) {
-      document.getElementById('gaussAllStepsBtn').click();
-    }
-
-    this.classList.add('hidden'); // Hide the LU button itself
-    renderLUOutput();
-
+    gaussOutputCard.classList.remove('hidden');
+    gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    var allStepsBtn = document.getElementById('gaussAllStepsBtn');
+    if (allStepsBtn) allStepsBtn.classList.add('hidden');
+    var luBtn = document.getElementById('gaussLUBtn');
+    if (luBtn) luBtn.classList.add('hidden');
   });
+
+
 }());
+
 
