@@ -746,7 +746,6 @@ input:-webkit-autofill:focus {
    GAUSSIAN ELIMINATION — UI STYLES
 ══════════════════════════════════════════ */
 
-/* Controls row */
 .gauss-controls {
   display: flex;
   align-items: flex-end;
@@ -761,7 +760,6 @@ input:-webkit-autofill:focus {
   gap: 0.3rem;
 }
 
-/* Augmented matrix input section */
 .gauss-matrix-wrap {
   margin-top: 0.5rem;
 }
@@ -787,7 +785,6 @@ input:-webkit-autofill:focus {
   text-align: left;
 }
 
-/* ── Step-by-step output ─────────────────── */
 .gauss-output {
   font-family: 'Segoe UI', system-ui, sans-serif;
   display: flex;
@@ -795,7 +792,6 @@ input:-webkit-autofill:focus {
   gap: 0.6rem;
 }
 
-/* Section headers  (Initial Matrix, Forward Elimination, etc.) */
 .gs-header {
   font-size: 1rem;
   font-weight: 700;
@@ -806,7 +802,6 @@ input:-webkit-autofill:focus {
   letter-spacing: 0.01em;
 }
 
-/* Pivot column announcement */
 .gs-pivot {
   font-size: 0.875rem;
   color: hsl(var(--text-muted));
@@ -816,7 +811,6 @@ input:-webkit-autofill:focus {
   border-left: 3px solid hsl(var(--accent));
 }
 
-/* Generic step line */
 .gs-line {
   font-family: monospace;
   font-size: 0.9rem;
@@ -825,7 +819,6 @@ input:-webkit-autofill:focus {
   animation: rowReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Multiplier: m₂₁ = a₂₁ / a₁₁ = 4 / 2 = 2 */
 .gs-multiplier {
   background: hsl(220, 25%, 22%);
   display: flex;
@@ -847,7 +840,6 @@ input:-webkit-autofill:focus {
   color: hsl(52, 100%, 60%);
 }
 
-/* Row operation: E₂ − (2)·E₁ → E₂ */
 .gs-rowop {
   background: rgba(var(--accent-rgb), 0.1);
   color: hsl(199, 90%, 75%);
@@ -860,7 +852,6 @@ input:-webkit-autofill:focus {
   font-style: normal;
 }
 
-/* Matrix display */
 .gauss-mat-wrap {
   overflow-x: auto;
   padding: 0.5rem 0;
@@ -920,7 +911,6 @@ input:-webkit-autofill:focus {
   user-select: none;
 }
 
-/* Back substitution step */
 .gs-backsub {
   background: hsl(220, 25%, 22%);
   display: flex;
@@ -937,7 +927,6 @@ input:-webkit-autofill:focus {
   font-size: 0.82rem;
 }
 
-/* Final solution box */
 .gs-solution {
   display: flex;
   flex-wrap: wrap;
