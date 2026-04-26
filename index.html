@@ -93,7 +93,6 @@
             <label>x₁ (second guess)</label>
             <input type="number" id="x1Input" />
           </div>
-          <!-- Stopping Criterion Select -->
           <div>
             <label>Stopping Criterion</label>
             <select id="stopSelect" class="stop-select">
@@ -101,7 +100,6 @@
               <option value="maxiter">Max Iterations</option>
             </select>
           </div>
-          <!-- Epsilon (shown by default) -->
           <div id="epsilonRow">
             <label>Epsilon (tolerance)</label>
             <div class="input-with-suffix">
@@ -109,7 +107,6 @@
               <span class="suffix">%</span>
             </div>
           </div>
-          <!-- Max Iterations (hidden by default) -->
           <div id="maxIterRow" class="hidden">
             <label>Max Iterations</label>
             <input type="number" id="maxIterInput" min="1" placeholder="e.g. 50" />
@@ -188,15 +185,26 @@
 
       <!-- Step-by-step output -->
       <div id="gaussOutputCard" class="card hidden">
-        <h2 class="card-title">Solution Steps</h2>
+        <h2 class="card-title" id="linearOutputTitle">Solution</h2>
+
+        <!-- Final Result Section (Always Visible) -->
+        <div id="gaussResult" class="gauss-output"
+          style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(var(--accent-rgb), 0.05); border-radius: 0.75rem; border: 1px solid rgba(var(--accent-rgb), 0.1);">
+        </div>
+
         <div class="step-controls">
-          <button id="gaussAllStepsBtn" class="solve-btn step-btn hidden">Show All Steps</button>
+          <button id="gaussAllStepsBtn" class="solve-btn step-btn">Show Steps</button>
           <button id="gaussLUBtn" class="solve-btn step-btn hidden"
             style="background: linear-gradient(135deg, hsl(260, 75%, 60%), hsl(280, 80%, 55%));">Continue with
             LU</button>
         </div>
-        <div id="gaussOutput" class="gauss-output"></div>
-        <div id="luOutput" class="gauss-output" style="margin-top: 1.5rem;"></div>
+
+        <!-- Steps Section (Hidden by Default) -->
+        <div id="gaussStepsContainer" class="hidden">
+          <h3 style="margin: 1.5rem 0 1rem; font-size: 1rem; color: hsl(var(--accent));">Solution Steps</h3>
+          <div id="gaussOutput" class="gauss-output"></div>
+          <div id="luOutput" class="gauss-output" style="margin-top: 1.5rem;"></div>
+        </div>
       </div>
     </div>
 
