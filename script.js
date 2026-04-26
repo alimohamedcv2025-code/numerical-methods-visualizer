@@ -1,4 +1,3 @@
-// ─── Shared helpers ───
 function fEval(expr, x) {
   return math.evaluate(expr, { x });
 }
@@ -39,7 +38,6 @@ function convertFxToGx(fxStr) {
     return null;
   }
 }
-// ─── Solver functions (with maxIter support) ───
 function solveBracket(method, funcExpr, xlInit, xuInit, epsilon, maxIter) {
   const rows = [];
   let xl = xlInit, xu = xuInit, prevXr = 0;
@@ -91,7 +89,6 @@ function solveNewton(funcExpr, dfExpr, x0, epsilon, maxIter) {
   }
   return rows;
 }
-// ─── NEW: Secant Method ───
 function solveSecant(funcExpr, x0, x1, epsilon, maxIter) {
   const rows = [];
   let xiPrev = x0, xi = x1;
@@ -112,7 +109,6 @@ function solveSecant(funcExpr, x0, x1, epsilon, maxIter) {
   }
   return rows;
 }
-// ─── NEW: Golden Section ───
 function solveGolden(funcExpr, xlInit, xuInit, optType, maxIter) {
   const rows = [];
   let xl = xlInit, xu = xuInit;
@@ -133,11 +129,8 @@ function solveGolden(funcExpr, xlInit, xuInit, optType, maxIter) {
   }
   return rows;
 }
-// ─── Detect page ───
 const isOutputPage = !!document.getElementById("tableBody");
-// ═══════════════════════════════════════════
 // INDEX PAGE LOGIC
-// ═══════════════════════════════════════════
 if (!isOutputPage) {
   const methodSelect = document.getElementById("methodSelect");
   const methodBadge = document.getElementById("methodBadge");
@@ -160,7 +153,6 @@ if (!isOutputPage) {
     newton: "Newton-Raphson",
     secant: "Secant",
   };
-  // Toggle stopping criterion
   stopSelect.addEventListener("change", function () {
     if (this.value === "epsilon") {
       epsilonRow.classList.remove("hidden");
@@ -315,7 +307,6 @@ if (!isOutputPage) {
     const m = methodSelect.value;
     errorBox.classList.add("hidden");
 
-    // Reset shared fields
     document.getElementById("gExpr").value = "";
     document.getElementById("dfExpr").value = "";
     document.getElementById("digitsInput").value = "6";
@@ -366,7 +357,6 @@ if (!isOutputPage) {
       document.getElementById("x1Input").value = "3.5";
 
     } else {
-      // No method selected yet — inform the user
       errorBox.textContent = "Please select a method first, then click Load Example.";
       errorBox.classList.remove("hidden");
       return;
@@ -438,7 +428,7 @@ if (isOutputPage) {
   function getXr(row) {
     if (isBracket) return row.xr;
     if (isFP) return row.gxi;
-    if (isGolden) return row.x2; // For visual approx and final root
+    if (isGolden) return row.x2;
     return row.xiPlus1;
   }
   const blueAccent = "hsl(230, 100%, 65%)";
@@ -600,7 +590,6 @@ if (isOutputPage) {
     });
   });
 }
-// Section switching
 const sectionButtons = document.querySelectorAll(".section-btn");
 const sections = document.querySelectorAll(".section");
 
@@ -609,13 +598,10 @@ sectionButtons.forEach(button => {
 
     const targetSection = button.dataset.section;
 
-    // hide all sections
     sections.forEach(sec => sec.classList.add("hidden"));
 
-    // show selected section
     document.getElementById(targetSection).classList.remove("hidden");
 
-    // reset polynomial method selection
     const methodSelect = document.getElementById("methodSelect");
     const inputSection = document.getElementById("inputSection");
     const methodBadge = document.getElementById("methodBadge");
@@ -624,7 +610,6 @@ sectionButtons.forEach(button => {
     if (inputSection) inputSection.classList.add("hidden");
     if (methodBadge) methodBadge.classList.add("hidden");
 
-    // reset linear method selection
     const linearMethodSelect = document.getElementById("linearMethodSelect");
     const linearInputSection = document.getElementById("linearInputSection");
     const linearMethodBadge = document.getElementById("linearMethodBadge");
@@ -637,7 +622,6 @@ sectionButtons.forEach(button => {
     if (gaussOutputCard) gaussOutputCard.classList.add("hidden");
     if (linearMethodError) linearMethodError.classList.add("hidden");
 
-    // reset unconstrained method selection
     const unconMethodSelect = document.getElementById("unconMethodSelect");
     const unconInputSection = document.getElementById("unconInputSection");
     const unconMethodBadge = document.getElementById("unconMethodBadge");
@@ -648,7 +632,6 @@ sectionButtons.forEach(button => {
   });
 });
 
-// Unconstrained Method Selection
 const unconMethodSelect = document.getElementById("unconMethodSelect");
 if (unconMethodSelect) {
   unconMethodSelect.addEventListener("change", function () {
@@ -706,7 +689,6 @@ if (unconMethodSelect) {
   });
 }
 
-// Linear Method Selection
 const linearMethodSelect = document.getElementById("linearMethodSelect");
 if (linearMethodSelect) {
   linearMethodSelect.addEventListener("change", function () {
@@ -760,9 +742,7 @@ if (linearMethodSelect) {
     }
   });
 }
-// ═══════════════════════════════════════════
-// GAUSSIAN ELIMINATION — LINEAR SECTION
-// ═══════════════════════════════════════════
+//  LINEAR SECTION
 (function () {
   const gaussSizeEl = document.getElementById('gaussSize');
   const gaussGridEl = document.getElementById('gaussEquationsList');
@@ -771,6 +751,29 @@ if (linearMethodSelect) {
   const gaussErrorEl = document.getElementById('gaussError');
   const gaussOutputCard = document.getElementById('gaussOutputCard');
   const gaussOutputEl = document.getElementById('gaussOutput');
+  const gaussResultEl = document.getElementById('gaussResult');
+  const gaussStepsContainer = document.getElementById('gaussStepsContainer');
+  const gaussAllStepsBtn = document.getElementById('gaussAllStepsBtn');
+
+  function cout(html) {
+    var el = document.createElement('div');
+    el.innerHTML = html;
+    gaussOutputEl.appendChild(el.firstElementChild || el);
+  }
+
+  function coutText(text) {
+    var el = document.createElement('div');
+    el.className = 'gs-header';
+    el.textContent = text;
+    gaussOutputEl.appendChild(el);
+  }
+
+  function coutResultText(text) {
+    var el = document.createElement('div');
+    el.className = 'gs-header';
+    el.textContent = text;
+    gaussResultEl.appendChild(el);
+  }
 
   function buildGrid(n) {
     gaussGridEl.innerHTML = '';
@@ -868,20 +871,7 @@ if (linearMethodSelect) {
     }
   }
 
-  // ─── Literal JS Translations of C++ Code ──────────────────────────
 
-  function cout(html) {
-    var el = document.createElement('div');
-    el.innerHTML = html;
-    gaussOutputEl.appendChild(el.firstElementChild || el);
-  }
-
-  function coutText(text) {
-    var el = document.createElement('div');
-    el.className = 'gs-header';
-    el.textContent = text;
-    gaussOutputEl.appendChild(el);
-  }
 
   function endl() {
     var el = document.createElement('div');
@@ -918,7 +908,7 @@ if (linearMethodSelect) {
     endl();
   }
 
-  function GJE(_a, n, ref) {
+  function GJE(_a, n, ref, skipBackward) {
     coutText("Initial Augmented Matrix");
     DisplayMatrix(_a, n, n + 1);
 
@@ -938,6 +928,8 @@ if (linearMethodSelect) {
         DisplayMatrix(_a, n, n + 1);
       }
     }
+    if (skipBackward) return;
+
 
     coutText("Backward Substitution:");
     var x = new Array(n).fill(0);
@@ -954,12 +946,13 @@ if (linearMethodSelect) {
     }
 
     endl();
-    coutText("Gauss Result");
+    endl();
+    coutResultText("Gauss Result");
     for (var i = 0; i < n; i++) {
-      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+      coutResultText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
     }
     endl();
-    
+
     return x;
   }
 
@@ -975,7 +968,7 @@ if (linearMethodSelect) {
       _l[i] = new Array(n).fill(0);
     }
 
-    GJE(_a, n, ref);
+    GJE(_a, n, ref, true);
 
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
@@ -1032,9 +1025,9 @@ if (linearMethodSelect) {
     }
     endl();
 
-    coutText("LU decomposition Final Result");
+    coutResultText("LU decomposition Final Result");
     for (var i = 0; i < n; i++) {
-      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+      coutResultText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
     }
     endl();
   }
@@ -1063,12 +1056,12 @@ if (linearMethodSelect) {
     var _detA = new Array(n).fill(0);
 
     for (var i = 0; i < n; i++) {
-      var Ai = A.map(function(row) { return row.slice(); });
+      var Ai = A.map(function (row) { return row.slice(); });
       for (var r = 0; r < n; r++) {
         Ai[r][i] = b[r];
       }
       _detA[i] = math.det(Ai);
-      
+
       coutText("Substitute Column " + (i + 1) + " with b to find D" + (i + 1) + ":");
       DisplayMatrix(Ai, n, n);
       coutText("D" + (i + 1) + " = " + parseFloat(_detA[i].toFixed(4)));
@@ -1076,9 +1069,9 @@ if (linearMethodSelect) {
     }
 
     endl();
-    coutText("Calculate Variables (Xi = Di / D):");
+    coutResultText("Calculate Variables (Xi = Di / D):");
     for (var i = 0; i < n; i++) {
-      coutText("X" + (i + 1) + " = D" + (i + 1) + " / D = " + parseFloat(_detA[i].toFixed(4)) + " / " + parseFloat(detA.toFixed(4)) + " = " + parseFloat((_detA[i] / detA).toFixed(4)));
+      coutResultText("X" + (i + 1) + " = D" + (i + 1) + " / D = " + parseFloat(_detA[i].toFixed(4)) + " / " + parseFloat(detA.toFixed(4)) + " = " + parseFloat((_detA[i] / detA).toFixed(4)));
     }
     endl();
   }
@@ -1150,21 +1143,23 @@ if (linearMethodSelect) {
     for (var i = 0; i < n; i++) {
       coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
     }
-    
+
     endl();
-    coutText("Gauss Jordan Result");
+    coutResultText("Gauss Jordan Result");
     for (var i = 0; i < n; i++) {
-      coutText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
+      coutResultText("X" + (i + 1) + " = " + parseFloat(x[i].toFixed(4)));
     }
     endl();
   }
 
-  // ─── Main Program Linkage ──────────────────────────────────────────
 
   gaussSolveBtn.addEventListener('click', function () {
     gaussErrorEl.classList.add('hidden');
     gaussOutputCard.classList.add('hidden');
     gaussOutputEl.innerHTML = '';
+    gaussResultEl.innerHTML = '';
+    gaussStepsContainer.classList.add('hidden');
+    gaussAllStepsBtn.textContent = 'Show Steps';
 
     var n = +gaussSizeEl.value;
     var M = readMatrix(n);
@@ -1181,7 +1176,7 @@ if (linearMethodSelect) {
     const m = document.getElementById('linearMethodSelect').value || 'gaussjordan';
     const pivotingSelect = document.getElementById('pivotingSelect');
     const usePivoting = pivotingSelect ? pivotingSelect.value === 'with' : false;
-    
+
     if (m === 'gaussjordan') {
       GaussJordanElimination(_a, n, usePivoting);
     } else if (m === 'gauss') {
@@ -1195,12 +1190,22 @@ if (linearMethodSelect) {
 
     gaussOutputCard.classList.remove('hidden');
     gaussOutputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    
-    var allStepsBtn = document.getElementById('gaussAllStepsBtn');
-    if (allStepsBtn) allStepsBtn.classList.add('hidden');
+
     var luBtn = document.getElementById('gaussLUBtn');
     if (luBtn) luBtn.classList.add('hidden');
   });
+
+  if (gaussAllStepsBtn) {
+    gaussAllStepsBtn.addEventListener('click', function () {
+      if (gaussStepsContainer.classList.contains('hidden')) {
+        gaussStepsContainer.classList.remove('hidden');
+        this.textContent = 'Hide Steps';
+      } else {
+        gaussStepsContainer.classList.add('hidden');
+        this.textContent = 'Show Steps';
+      }
+    });
+  }
 
 
 }());
