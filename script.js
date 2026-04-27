@@ -45,7 +45,7 @@ function solveBracket(method, funcExpr, xlInit, xuInit, epsilon, maxIter) {
   for (let i = 1; i <= limit; i++) {
     const fxl = fEval(funcExpr, xl);
     const fxu = fEval(funcExpr, xu);
-    let xr = method === "bisection" ? (xl + xu) / 2 : (xl * fxu - xu * fxl) / (fxu - fxl);
+    let xr = method === "bisection" ? (xl + xu) / 2 : xu - ((fxu * (xl - xu)) / (fxl - fxu));
     const fxr = fEval(funcExpr, xr);
     const err = i === 1 ? 0 : Math.abs((xr - prevXr) / xr) * 100;
     rows.push({ iteration: i, xl, xu, xr, f_xl: fxl, f_xu: fxu, f_xr: fxr, error: err });
@@ -908,7 +908,7 @@ if (linearMethodSelect) {
     endl();
   }
 
-  function GJE(_a, n, ref, skipBackward) {
+  function gausselimination(_a, n, ref, skipBackward) {
     coutText("Initial Augmented Matrix");
     DisplayMatrix(_a, n, n + 1);
 
@@ -968,7 +968,7 @@ if (linearMethodSelect) {
       _l[i] = new Array(n).fill(0);
     }
 
-    GJE(_a, n, ref, true);
+    gausselimination(_a, n, ref, true);
 
     for (var i = 0; i < n; i++) {
       for (var j = 0; j < n; j++) {
@@ -977,7 +977,7 @@ if (linearMethodSelect) {
     }
 
     endl();
-    coutText("U matrix (from GJE)");
+    coutText("U matrix (from gausselimination)");
     DisplayMatrix(_u, n, n);
 
     for (var i = 0; i < n; i++) {
@@ -1181,7 +1181,7 @@ if (linearMethodSelect) {
       GaussJordanElimination(_a, n, usePivoting);
     } else if (m === 'gauss') {
       var ref = {};
-      GJE(_a, n, ref);
+      gausselimination(_a, n, ref);
     } else if (m === 'lu') {
       LUDecomposition(_a, n);
     } else if (m === 'cramer') {
